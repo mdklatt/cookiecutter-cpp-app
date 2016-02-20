@@ -1,0 +1,30 @@
+## Travis CI configuration for the cookiecutter-python-app project template.
+##
+##   <https://travis-ci.org/mdklatt/cookiecutter-python-app>
+##
+language: cpp
+
+compiler:
+  - clang
+  - gcc
+
+branches:
+  only:
+    - master
+    - dev
+
+sudo: true
+
+before_script:
+  # Install Cookiecutter and an updated version of CMake. Because this is a C++
+  # project Travis does not create a Python virtualenv, and pip needs to
+  # install locally. CMake needs to be built from source.
+  - pip install --requirement=requirements.txt --user
+  - curl -O -L http://www.cmake.org/files/v3.0/cmake-3.0.2.tar.gz
+  - tar zxf cmake-3.0.2.tar.gz
+  - pushd cmake-3.0.2
+  - cmake . && make && sudo make install
+  - popd
+  
+script:
+  - bash test.bash 
