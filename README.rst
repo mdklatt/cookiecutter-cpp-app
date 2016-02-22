@@ -46,3 +46,21 @@ Create a new project directly from the template on `GitHub`_:
 
 
 ..  _GitHub: https://github.com/mdklatt/cookiecutter-cpp-app
+
+
+Build the project using CMake:
+
+..  code-block::
+
+    $ mkdir -p build/Debug && cd build/Debug
+    $ cmake -DCMAKE_BUILD_TYPE=Debug ../../
+    $ make
+    
+    
+Generate Sphinx documenation.
+
+..  code-block::
+
+    $ pip install --requirement=requirements-doc.txt --user
+    $ cd doc
+    $ make html

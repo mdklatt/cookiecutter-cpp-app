@@ -1,7 +1,7 @@
 ## Test the cpp-app Cookiecutter template.
 ##
-## A template project is created in a temporary directory, the application is
-## build, and the application and its test suite is run.
+## A template project is created in a temporary directory, the application and
+## its test suite are built, and both are executed.
 ##
 set -e  # exit immediately on failure
 if [[ "$(uname)" == "Darwin" ]]
@@ -17,6 +17,7 @@ pushd $tmpdir
 cookiecutter $template --no-input
 cd hello
 cmake -DCMAKE_BUILD_TYPE=Debug && make
+build/Debug/test_hello
 build/Debug/hello
 popd
 exit 0
