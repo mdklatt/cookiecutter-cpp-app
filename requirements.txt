@@ -1,4 +1,4 @@
-## Python requirements for using the python-app template. 
+## Python requirements for using the cpp-app template. 
 ##
 ##    pip install --requirement=requirements.txt
 ##
