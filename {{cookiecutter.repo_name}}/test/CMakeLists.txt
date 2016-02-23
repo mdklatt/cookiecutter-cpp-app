@@ -1,4 +1,4 @@
-project(test_{{ cookiecutter.repo_name }})
+project(test_{{ cookiecutter.app_name }})
 
 add_subdirectory(lib/gtest)
 
