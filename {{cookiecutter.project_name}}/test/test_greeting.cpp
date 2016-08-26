@@ -12,7 +12,7 @@
  * Test the greeting() function.
  * 
  */
-TEST(test_{{ cookiecutter.repo_name }}, greeting) {
+TEST(test_{{ cookiecutter.project_name }}, greeting) {
     extern std::string greeting();
     ASSERT_EQ("Hello, World.", greeting());
     return;
