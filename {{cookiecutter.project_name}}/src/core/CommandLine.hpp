@@ -1,7 +1,7 @@
 /// Header for the CommandLine class.
 ///
-#ifndef CPPAPP_COMMANDLINE_HPP
-#define CPPAPP_COMMANDLINE_HPP
+#ifndef {{ cookiecutter.app_name|upper }}_COMMANDLINE_HPP
+#define {{ cookiecutter.app_name|upper }}_COMMANDLINE_HPP
 
 #include <map>
 #include <memory>
@@ -183,7 +183,6 @@ private:
     /// @param argv_iter argv iterator
     /// @return (opt, val, is_long) tuple
     std::tuple<std::string, std::string, bool> read_opt(ArgvIter& iter);
-
 };
 
-#endif  // CPPAPP_COMMANDLINE_HPP
+#endif  // {{ cookiecutter.app_name|upper }}_COMMANDLINE_HPP

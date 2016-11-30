@@ -1,17 +1,13 @@
 /// Application entry point.
 ///
 #include <cstdlib>
-#include <iostream>
-#include <string>
-
-
-using namespace std;
+#include "CommandLine.hpp"
 
 
 /// Execute the application.
 ///
-int main() {
-    extern string greeting();  // greeting.cpp
-    cout << greeting() << endl;
+int main() 
+{
+    CommandLine cmdl;
     return EXIT_SUCCESS;
 }
