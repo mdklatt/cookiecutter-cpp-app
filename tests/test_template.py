@@ -43,10 +43,10 @@ def main():
         chdir(defaults["project_name"])
         check_call(split("cmake -DCMAKE_BUILD_TYPE=Debug"))
         check_call(split("cmake --build ."))
-        app = defaults["project_name"]
-        print("build/Debug/test_{:s}".format(app))
-        check_call(split("build/Debug/test_{:s}".format(app)))
-        check_call(split("build/Debug/{:s}".format(app)))
+        main_app = defaults["project_name"]
+        check_call(split(join(".", main_app)))
+        test_app = "test_{:s}".format(main_app)
+        check_call(split(join("test", test_app)))
     return 0
     
     

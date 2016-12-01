@@ -1,5 +1,5 @@
 {
-    "project_name": "hello",
+    "project_name": "cppapp",
     "app_name": "{{ cookiecutter.project_name }}",
     "author_name": "",
     "author_email": "",

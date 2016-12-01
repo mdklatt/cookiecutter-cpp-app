@@ -4,17 +4,15 @@
 ##
 project(test_{{ cookiecutter.app_name }})
 
-add_subdirectory(lib/gtest)
+set(TEST_SOURCE_FILES
+    ${CORE_SOURCE_FILES}
+    ${CMAKE_SOURCE_DIR}/test/CommandLineTest.cpp
+)
 
+add_subdirectory(lib/gtest)
 include_directories(
     ${gtest_SOURCE_DIR} 
     ${gtest_SOURCE_DIR}/include
 )
-
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build/${CMAKE_BUILD_TYPE})
-
-add_executable(${PROJECT_NAME} 
-    CommandLineTest.cpp
-    ${CMAKE_SOURCE_DIR}/src/core/CommandLine.cpp
-)
+add_executable(${PROJECT_NAME} ${TEST_SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} gtest gtest_main)
