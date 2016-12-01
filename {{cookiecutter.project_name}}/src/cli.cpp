@@ -1,6 +1,7 @@
 /// Implementation of the {{ cookiecutter.project_name}} CLI.
 ///
 #include <cstdlib>
+#include <iostream>
 #include "core/CommandLine.hpp"
 
 
@@ -14,7 +15,14 @@
 /// @return application exit code
 int cli(int argc, char* argv[])
 {
-    CommandLine cmdl;
+    CommandLine cmdl{true};  // strict argument parsing
+    cmdl.opt("version", 'v');
     cmdl.parse(argc, argv);
+    if (cmdl.has_arg("version")) {
+        // TODO: Implement project versioning.
+        std::cout << "{{ cookiecutter.project_name }} x.x.x" << std::endl;
+        return EXIT_SUCCESS;
+    }
+    // TODO: Implment subcommand(s).
     return EXIT_SUCCESS;
 }
