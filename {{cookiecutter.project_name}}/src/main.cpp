@@ -1,13 +1,12 @@
 /// Application entry point.
 ///
-#include <cstdlib>
-#include "CommandLine.hpp"
+
+extern int cli(int, char* []);  // cli.cpp
 
 
-/// Execute the application.
+/// Execute the desired application interface.
 ///
-int main() 
+int main(int argc, char* argv[]) 
 {
-    CommandLine cmdl;
-    return EXIT_SUCCESS;
+    return cli(argc, argv); 
 }

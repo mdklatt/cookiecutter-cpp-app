@@ -12,6 +12,7 @@ set(CORE_SOURCE_FILES
 )
 set(APP_SOURCE_FILES
     ${CORE_SOURCE_FILES}
+    ${CMAKE_SOURCE_DIR}/src/cli.cpp
     ${CMAKE_SOURCE_DIR}/src/main.cpp
 )
 
