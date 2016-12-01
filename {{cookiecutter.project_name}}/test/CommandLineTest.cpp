@@ -247,17 +247,6 @@ TEST_F(CommandLineTest, parse_help)
 }
 
 
-/// Test the parse() method with version option.
-///
-TEST_F(CommandLineTest, parse_version)
-{
-    CommandLine cmdl;
-    args({"cmd", "--version"});
-    ASSERT_EXIT(cmdl.parse(argc, argv), ExitedWithCode(0), "");
-    return;
-}
-
-
 /// Test the has_arg() method.
 ///
 TEST_F(CommandLineTest, has_arg)

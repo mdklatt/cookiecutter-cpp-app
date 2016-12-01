@@ -66,15 +66,17 @@ public:
     /// Construct a new object.
     ///
     /// With strict argument checking, unexpected options or positional
-    /// arguments will cause an exception to be thrown during parsing.
+    /// arguments will cause an exception to be thrown during parsing. The
+    /// default help option will display a message and exit; this option
+    /// will be applied to any subcommands as well.
     ///
     /// @param strict use strict argument checking
-    /// @param stdopts add `--help` and `--version` options
-    CommandLine(bool strict=false, bool stdopts=true);
+    /// @param help add `--help` option
+    CommandLine(bool strict=false, bool help=true);
 
     ///
     ///
-    /// @param name argument name
+    /// @param name argument namehelp
     /// @return true if argument is present
     bool has_arg(const std::string& name) const;
 
@@ -133,7 +135,7 @@ private:
     };
     static const char optdel{'-'};
     const bool strict;
-    const bool stdopts;
+    const bool help;
     std::vector<OptArg> opt_args;
     std::vector<PosArg> pos_args;  // order must be preserved
     std::map<std::string, CommandLine> sub_args;

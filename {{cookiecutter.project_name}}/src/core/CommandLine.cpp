@@ -18,13 +18,12 @@ using std::tuple;
 using std::vector;
 
 
-CommandLine::CommandLine(bool strict, bool stdopts) :
+CommandLine::CommandLine(bool strict, bool help) :
     strict(strict),
-    stdopts(stdopts)
+    help(help)
 {
-    if (stdopts) {
+    if (help) {
         opt("help", 'h');
-        opt("version", 'v');
     }
     return;
 }
@@ -61,7 +60,7 @@ void CommandLine::pos(const std::string& name, size_t count)
 
 CommandLine& CommandLine::sub(const string& name)
 {
-    CommandLine cmdl{strict, stdopts};
+    CommandLine cmdl{strict, help};
     sub_args.emplace(make_pair(name, std::move(cmdl)));  // invalidates cmdl
     return sub_args[name];
 }
@@ -98,15 +97,9 @@ void CommandLine::parse_argv(ArgvIter& iter, const ArgvIter& end)
     // If this is a subcommand, first argument will be the subcommand name.
     const_cast<string&>(name) = *iter++;
     parse_opts(iter, end);
-    if (stdopts) {
-        if (not (*this)["help"].empty()) {
-            std::cout << usage() << std::endl;
-            std::exit(EXIT_SUCCESS);
-        }
-        if (not (*this)["version"].empty()) {
-            std::cout << "x.x.x" << std::endl;  // TODO
-            std::exit(EXIT_SUCCESS);
-        }
+    if (help and has_arg("help")) {
+        std::cout << usage() << std::endl;
+        std::exit(EXIT_SUCCESS);
     }
     parse_subs(iter, end);  // subcommand will process remaining args
     parse_args(iter, end);
