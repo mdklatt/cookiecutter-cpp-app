@@ -11,8 +11,7 @@ set(TEST_SOURCE_FILES
 
 add_subdirectory(lib/gtest)
 include_directories(
-    ${gtest_SOURCE_DIR} 
-    ${gtest_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/src
 )
 add_executable(${PROJECT_NAME} ${TEST_SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} gtest gtest_main)

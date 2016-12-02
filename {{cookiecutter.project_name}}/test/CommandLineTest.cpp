@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 #include <gtest/gtest.h>
-#include "CommandLine.hpp"
+#include "core/CommandLine.hpp"
 
 
 using std::string;
