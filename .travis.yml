@@ -14,17 +14,12 @@ branches:
     - dev
 
 sudo: true
+dist: trusty  # beta; needed for C++11
 
 before_script:
-  # Install Cookiecutter and an updated version of CMake. Because this is a C++
-  # project Travis does not create a Python virtualenv, and pip needs to
-  # install locally. CMake needs to be built from source.
+  # Install Cookiecutter. Because this is a C++ project Travis does not create
+  # a Python virtualenv, so pip needs to install locally.
   - pip install --requirement=requirements.txt --user
-  - curl -O -L http://www.cmake.org/files/v3.0/cmake-3.0.2.tar.gz
-  - tar zxf cmake-3.0.2.tar.gz
-  - pushd cmake-3.0.2
-  - cmake . && make && sudo make install
-  - popd
   
 script:
   - python tests/test_template.py
