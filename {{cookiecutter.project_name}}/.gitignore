@@ -1,4 +1,4 @@
-# C++
+# Ignore C++ build artifacts.
 
 *.o
 *.so
@@ -6,26 +6,18 @@
 *.dll
 
 
-# Sphinx
-
-_build/
-_static/
-_templates/
-
-
-# Vagrant
+# Ignore Vagrant runtime files.
 
 .vagrant/
 
 
-# IDE settings
+# Ignore settings for various IDEs.
 
 .idea/
 .project/
-.pydevproject/
 nbproject/
 
 
-# OS-specific
+# Ignore OS metadata files.
 
 .DS_Store
