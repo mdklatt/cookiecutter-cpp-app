@@ -1,0 +1,5 @@
+# Ignore generated Doxygen files.
+
+html/
+latex/
+

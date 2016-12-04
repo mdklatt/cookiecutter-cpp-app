@@ -1,6 +1,5 @@
 /// Application entry point.
 ///
-
 extern int cli(int, char* []);  // cli.cpp
 
 

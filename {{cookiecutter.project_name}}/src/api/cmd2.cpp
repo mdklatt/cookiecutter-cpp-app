@@ -1,4 +1,4 @@
-/// Implemenation of the cmd1 sample command.
+/// Implemenation of the cmd2 sample command.
 ///
 #include <iostream>
 #include "api.hpp"
@@ -6,6 +6,6 @@
 
 void cmd2(const std::string& arg)
 {
-    std::cout << "cmd1 called with argument " << arg << std::endl;
+    std::cout << "cmd2 called with argument " << arg << std::endl;
     return;
 }

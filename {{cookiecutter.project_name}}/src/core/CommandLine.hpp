@@ -1,5 +1,6 @@
 /// Header for the CommandLine class.
 ///
+/// @file
 #ifndef {{ cookiecutter.app_name|upper }}_COMMANDLINE_HPP
 #define {{ cookiecutter.app_name|upper }}_COMMANDLINE_HPP
 

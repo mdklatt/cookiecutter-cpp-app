@@ -1,5 +1,6 @@
 /// Implementation of the {{ cookiecutter.project_name}} CLI.
 ///
+/// @file
 #include <cstdlib>
 #include <iostream>
 #include <string>

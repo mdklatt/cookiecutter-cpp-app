@@ -1,4 +1,4 @@
-/// Implemenation of the cmd2 sample command.
+/// Implemenation of the cmd1 sample command.
 ///
 #include <iostream>
 #include "api.hpp"
