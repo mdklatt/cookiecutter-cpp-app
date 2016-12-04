@@ -6,5 +6,5 @@
     "project_version": "0.1.0.dev0",
     "copyright_year": "2016",
     "googletest_release": "master",
-    "sphinx_theme": "sphinx_rtd_theme"
+    "sphinx_theme": "alabaster"
 }
