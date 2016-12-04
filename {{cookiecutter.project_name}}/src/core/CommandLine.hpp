@@ -75,9 +75,9 @@ public:
     /// @param help add `--help` option
     CommandLine(bool strict=false, bool help=true);
 
+    /// Determine if an argument was passed on the command line.
     ///
-    ///
-    /// @param name argument namehelp
+    /// @param name argument name
     /// @return true if argument is present
     bool has_arg(const std::string& name) const;
 
