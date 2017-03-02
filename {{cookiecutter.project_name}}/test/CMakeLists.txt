@@ -7,6 +7,7 @@ project(test_{{ cookiecutter.app_name }})
 set(TEST_SOURCE_FILES
     ${CORE_SOURCE_FILES}
     ${CMAKE_SOURCE_DIR}/test/CommandLineTest.cpp
+    ${CMAKE_SOURCE_DIR}/test/test_logging.cpp    
 )
 
 add_subdirectory(lib/gtest)

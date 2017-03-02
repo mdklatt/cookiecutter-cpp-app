@@ -13,6 +13,7 @@ set(API_SOURCE_FILES
 )
 set(CORE_SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/src/core/CommandLine.cpp
+    ${CMAKE_SOURCE_DIR}/src/core/logging.cpp
 )
 set(APP_SOURCE_FILES
     ${API_SOURCE_FILES}
