@@ -110,8 +110,8 @@ namespace Logging
         /// @param level severity level
         /// @param stream destination stream
         StreamHandler(Level level=WARN, std::ostream& stream=std::cerr):
-            Handler{level},
-            stream{stream} {}
+            Handler(level),
+            stream(stream) {}
 
         /// Create a clone of this object.
         ///
@@ -225,4 +225,4 @@ namespace Logging
     };
 }
 
-#endif  //{{ cookiecutter.app_name|upper }}_LOGGING_HPP
+#endif  // {{ cookiecutter.app_name|upper }}_LOGGING_HPP
