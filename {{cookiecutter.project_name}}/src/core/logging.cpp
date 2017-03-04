@@ -1,7 +1,9 @@
 /// Implementation of the logging module.
 ///
+#include <cstdio>
 #include <ctime>
 #include <algorithm>
+#include <stdexcept>
 #include <iomanip>
 #include <iterator>
 #include <list>
@@ -15,9 +17,11 @@ using std::chrono::seconds;
 using std::copy;
 using std::list;
 using std::prev;
+using std::runtime_error;
 using std::string;
 using std::ostream_iterator;
 using std::ostringstream;
+using std::strftime;
 using std::unique_ptr;
 
 using namespace Logging;
@@ -52,11 +56,15 @@ string StreamHandler::time(const Record& record) const
     const auto elapsed(record.time.time_since_epoch());
     const std::time_t time{duration_cast<seconds>(elapsed).count()};
     const auto time_info(std::localtime(&time));
-    ostringstream buffer;
-    buffer << std::put_time(time_info, "%FT%T");
     const long msecs(duration_cast<milliseconds>(elapsed).count() % 1000);
-    buffer << "." << std::setfill('0') << std::setw(3) << msecs;
-    return buffer.str();
+    char buffer[23+1];
+    if (strftime(&buffer[0], 19+1, "%FT%T", time_info) != 19) {
+        throw runtime_error("error converting time to string");
+    }
+    if (snprintf(&buffer[19], 4+1, ".%03ld", msecs) != 4) {
+        throw runtime_error("error converting time to string");
+    }
+    return string(buffer);
 }
 
 
