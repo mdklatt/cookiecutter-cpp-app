@@ -52,7 +52,7 @@ namespace Logging
     };
 
 
-    /// Logger handler base class.
+    /// Logger handler abstract base class.
     ///
     /// A Handler is what actually sends logger records to a destination. A
     /// logger may have zero or more associated handlers, each with their own
@@ -62,15 +62,6 @@ namespace Logging
     class Handler
     {
     public:
-        /// Construct a new Handler.
-        ///
-        /// Records with a lower severity level will not be emitted by this
-        /// handler.
-        ///
-        /// @param level severity level
-        Handler(Level level=WARN) :
-            level{level} {}
-
         /// Process a logger record.
         ///
         /// @param record
@@ -86,6 +77,15 @@ namespace Logging
         virtual Handler* clone() const = 0;
 
     protected:
+        /// Construct a new Handler.
+        ///
+        /// Records with a lower severity level will not be emitted by this
+        /// handler.
+        ///
+        /// @param level severity level
+        Handler(Level level=WARN) :
+            level{level} {}
+
         /// Emit a logger record.
         ///
         /// This is the final step in processing a record, and must be defined

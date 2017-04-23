@@ -13,7 +13,6 @@
 using std::list;
 using std::ostringstream;
 using std::string;
-using testing::Test;
 using testing::TestWithParam;
 using testing::Values;
 
