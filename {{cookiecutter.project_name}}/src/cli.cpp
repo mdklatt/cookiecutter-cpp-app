@@ -7,6 +7,7 @@
 #include <string>
 #include "core/CommandLine.hpp"
 #include "api/api.hpp"
+#include "version.h"
 
 using std::cout;
 using std::endl;
@@ -14,9 +15,9 @@ using std::string;
 using std::vector;
 
 
-/// Display a usage message.
+/// Display a help message.
 ///
-void usage()
+void help()
 {
     cout << "{{ cookiecutter.app_name }} [-h]" << endl;
     return;
@@ -36,9 +37,10 @@ int cli(int argc, char* argv[])
     // The leading '+' for short_opts enables POSIXLY_CORRECT behavior, which
     // halts option processing as soon as a non-option is encountered. This is
     // necessary for implementing subcommands.
-    const char* short_opts{"+:h"};
+    const char* short_opts{"+:hv"};
     const option long_opts[]{
         {"help", no_argument, nullptr, 'h'},
+        {"version", no_argument, nullptr, 'v'},
         {nullptr, 0, nullptr, 0}  // sentinel
     };
     while (true) {
@@ -49,12 +51,15 @@ int cli(int argc, char* argv[])
         }
         switch (opt) {        
             case 'h': 
-                usage();
+                help();
+                return EXIT_SUCCESS;
+            case 'v': 
+                cout << "{{ cookiecutter.app_name }} " <<  {{ cookiecutter.app_name|upper }}_VERSION << endl;
                 return EXIT_SUCCESS;
             case '?':  // unknown option
             case ':':  // missing option value
             default:
-                usage();
+                help();
                 return EXIT_FAILURE;
         }
     }

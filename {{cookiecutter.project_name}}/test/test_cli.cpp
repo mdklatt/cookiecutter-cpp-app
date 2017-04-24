@@ -74,7 +74,15 @@ private:
 
 TEST_F(CliTest, help)
 {
-    cmdl({"cppapp", "-h"});
+    cmdl({"{{ cookiecutter.app_name }}", "-h"});
+    ASSERT_EQ(cli(argc, argv), EXIT_SUCCESS);
+    return;
+}
+
+
+TEST_F(CliTest, version)
+{
+    cmdl({"{{ cookiecutter.app_name }}", "-v"});
     ASSERT_EQ(cli(argc, argv), EXIT_SUCCESS);
     return;
 }
