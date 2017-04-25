@@ -13,7 +13,6 @@ branches:
     - master
     - dev
 
-sudo: true
 dist: trusty  # beta; needed for C++11
 
 before_script:
