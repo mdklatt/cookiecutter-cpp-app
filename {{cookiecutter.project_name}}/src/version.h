@@ -1,4 +1,4 @@
-/// Current version of the DataServer application.
+/// Current version of the {{ cookiecutter.app_name }} application.
 ///
 /// This project uses the Semantic Versioning scheme:
 ///
