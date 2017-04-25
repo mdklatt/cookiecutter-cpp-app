@@ -3,7 +3,6 @@
 /// Link all test files with the `gtest_main` library to create a command-line 
 /// test runner.
 ///
-#include <getopt.h>
 #include <cstdlib>
 #include <string>
 #include <vector>
@@ -43,7 +42,6 @@ protected:
     void cmdl(const vector<string>& args)
     {
         dealloc();
-        optind = 0;  // reset getopt parser, assumes POSIXLY_CORRECT
         argc = static_cast<int>(args.size());
         argv = new char*[argc];
         auto iter(args.begin());
@@ -73,18 +71,39 @@ private:
     }
 };
 
-
+/// Test the --help option.
+///
 TEST_F(CliTest, help)
 {
-    cmdl({"{{ cookiecutter.app_name }}", "-h"});
-    ASSERT_EQ(cli(argc, argv), EXIT_SUCCESS);
+    // TODO: Test correct output to cout.
+    for (auto flag: vector<string>{"-h", "--help"}) {
+        cmdl({"{{ cookiecutter.app_name }}", flag});
+        ASSERT_EQ(cli(argc, argv), EXIT_SUCCESS);        
+    }
     return;
 }
 
 
+/// Test the --version option.
+///
 TEST_F(CliTest, version)
 {
-    cmdl({"{{ cookiecutter.app_name }}", "-v"});
-    ASSERT_EQ(cli(argc, argv), EXIT_SUCCESS);
+    // TODO: Test correct output to cout.
+    for (auto flag: vector<string>{"-v", "--version"}) {
+        cmdl({"{{ cookiecutter.app_name }}", flag});
+        ASSERT_EQ(cli(argc, argv), EXIT_SUCCESS);        
+    }
+    return;
+}
+
+
+/// Test invalid options.
+///
+TEST_F(CliTest, invalid)
+{
+    for (auto flag: vector<string>{"-x", "--help=badarg"}) {
+        cmdl({"{{ cookiecutter.app_name }}", flag});
+        ASSERT_EQ(cli(argc, argv), EXIT_FAILURE);        
+    }
     return;
 }

@@ -43,6 +43,7 @@ int cli(int argc, char* argv[])
         {"version", no_argument, nullptr, 'v'},
         {nullptr, 0, nullptr, 0}  // sentinel
     };
+    optind = 0;  // reset getopt parser (POSIXLY_CORRECT mode); not thread-safe
     while (true) {
         // Process options.
         const int opt{getopt_long(argc, argv, short_opts, long_opts, nullptr)};
