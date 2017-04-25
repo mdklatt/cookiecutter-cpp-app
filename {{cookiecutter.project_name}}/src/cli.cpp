@@ -54,7 +54,7 @@ int cli(int argc, char* argv[])
                 help();
                 return EXIT_SUCCESS;
             case 'v': 
-                cout << "{{ cookiecutter.app_name }} " <<  {{ cookiecutter.app_name|upper }}_VERSION << endl;
+                cout << "{{ cookiecutter.app_name }} v" <<  {{ cookiecutter.app_name|upper }}_VERSION << endl;
                 return EXIT_SUCCESS;
             case '?':  // unknown option
             case ':':  // missing option value

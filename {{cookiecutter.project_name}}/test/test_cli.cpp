@@ -3,6 +3,7 @@
 /// Link all test files with the `gtest_main` library to create a command-line 
 /// test runner.
 ///
+#include <getopt.h>
 #include <cstdlib>
 #include <string>
 #include <vector>
@@ -42,6 +43,7 @@ protected:
     void cmdl(const vector<string>& args)
     {
         dealloc();
+        optind = 0;  // reset getopt parser, assumes POSIXLY_CORRECT
         argc = static_cast<int>(args.size());
         argv = new char*[argc];
         auto iter(args.begin());
