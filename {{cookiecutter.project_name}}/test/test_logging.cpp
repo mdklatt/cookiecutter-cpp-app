@@ -37,9 +37,9 @@ protected:
     /// will emit the same messages.
     ///
     LoggerTest() :
-        logger{"LoggerTest", level}
+        logger{"LoggerTest"}
     {
-        logger.handler(StreamHandler(level, stream));
+        logger.start(level, stream);
         return;
     }
     const Level level{GetParam()};
@@ -61,9 +61,9 @@ TEST_P(LoggerTest, log)
         // Test the case where the logger has a higher severity level than the
         // handler; messages that would normally be emitted are ignored at the
         // logger level.
-        Logger silent{"LoggerTest", FATAL};
+        Logger silent{"LoggerTest"};
         ostringstream stream;
-        silent.handler(StreamHandler(level, stream));
+        silent.start(FATAL, stream);
         silent.log(level, message);
         ASSERT_TRUE(stream.str().empty());
     }

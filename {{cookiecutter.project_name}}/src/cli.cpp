@@ -6,9 +6,12 @@
 #include <iostream>
 #include <string>
 #include "core/CommandLine.hpp"
+#include "core/logging.hpp"
 #include "api/api.hpp"
 #include "version.h"
 
+using Logging::logger;
+using Logging::level;
 using std::cout;
 using std::endl;
 using std::string;
@@ -37,12 +40,14 @@ int cli(int argc, char* argv[])
     // The leading '+' for short_opts enables POSIXLY_CORRECT behavior, which
     // halts option processing as soon as a non-option is encountered. This is
     // necessary for implementing subcommands.
-    const char* short_opts{"+:hv"};
+    const char* short_opts{"+:hvw:"};
     const option long_opts[]{
         {"help", no_argument, nullptr, 'h'},
         {"version", no_argument, nullptr, 'v'},
+        {"warn", required_argument, nullptr, 'w'},
         {nullptr, 0, nullptr, 0}  // sentinel
     };
+    string warn("warn");
     optind = 0;  // reset getopt parser (POSIXLY_CORRECT mode); not thread-safe
     while (true) {
         // Process options.
@@ -57,6 +62,9 @@ int cli(int argc, char* argv[])
             case 'v': 
                 cout << "{{ cookiecutter.app_name }} v" <<  {{ cookiecutter.app_name|upper }}_VERSION << endl;
                 return EXIT_SUCCESS;
+            case 'w':
+                warn = optarg;
+                break;
             case '?':  // unknown option
             case ':':  // missing option value
             default:
@@ -64,5 +72,7 @@ int cli(int argc, char* argv[])
                 return EXIT_FAILURE;
         }
     }
+    logger.start(level(warn));
+    logger.info("starting application");
     return EXIT_SUCCESS;
 }

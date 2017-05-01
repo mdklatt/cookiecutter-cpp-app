@@ -1,5 +1,6 @@
 /// Implementation of the logging module.
 ///
+#include <cctype>
 #include <cstdio>
 #include <ctime>
 #include <algorithm>
@@ -16,38 +17,61 @@ using std::chrono::microseconds;
 using std::chrono::seconds;
 using std::copy;
 using std::list;
+using std::ostream;
+using std::ostream_iterator;
+using std::ostringstream;
 using std::prev;
 using std::runtime_error;
 using std::string;
-using std::ostream_iterator;
-using std::ostringstream;
 using std::strftime;
 using std::unique_ptr;
 
 using namespace Logging;
 
 
-void StreamHandler::emit(const Record& record) const
-{
-    // TODO: Allows user-specified formatting.
-    const list<string> fields{time(record), level(record), record.name, record.message};
-    const auto last(prev(fields.end()));
-    copy(fields.begin(), last, ostream_iterator<string>{stream, ";"});
-    stream << *last << std::endl;  // don't want delimiter after last element
-    return;
-}
+Logger Logging::logger{"{{ cookiecutter.app_name }}"};
 
 
-string StreamHandler::level(const Record& record) const
+string Logging::level(Level val)
 {
-    static const std::map<Level, std::string> levels{
+    static const std::map<Level, string> levels{
         {DEBUG, "DEBUG"},
         {INFO, "INFO"},
         {WARN, "WARN"},
         {ERROR, "ERROR"},
         {FATAL, "FATAL"}
     };
-    return levels.at(record.level);  // why won't operator[] compile here?
+    return levels.at(val);  // why won't operator[] compile here?
+}
+
+
+Level Logging::level(string str)
+{
+    static const std::map<string, Level> levels{
+        {"DEBUG", DEBUG},
+        {"INFO", INFO},
+        {"WARN", WARN},
+        {"ERROR", ERROR},
+        {"FATAL", FATAL}
+    };
+    std::transform(str.begin(), str.end(), str.begin(), toupper);
+    try {
+        return levels.at(str);  // why won't operator[] compile here?        
+    }
+    catch (const std::out_of_range&) {
+        throw std::runtime_error("unknown warning level: " + str);
+    }
+}
+
+
+void StreamHandler::emit(const Record& record) const
+{
+    // TODO: Allows user-specified formatting.
+    const list<string> fields{time(record), Logging::level(record.level), record.name, record.message};
+    const auto last(prev(fields.end()));
+    copy(fields.begin(), last, ostream_iterator<string>{stream, ";"});
+    stream << *last << std::endl;  // don't want delimiter after last element
+    return;
 }
 
 
@@ -71,6 +95,14 @@ string StreamHandler::time(const Record& record) const
 StreamHandler* StreamHandler::clone() const
 {
     return new StreamHandler(*this);
+}
+
+
+void Logger::start(Level level, ostream& stream)
+{
+    this->level = level;
+    handler(StreamHandler(level, stream));
+    return;
 }
 
 
@@ -131,9 +163,8 @@ void Logger::log(Level level, const string& message) const
 
 void Handler::handle(const Record& record) const
 {
-    if (record.level < level) {
-        return;  // ignore messages of a lower severity
+    if (record.level >= level) {
+         emit(record);
     }
-    emit(record);
     return;
 }
