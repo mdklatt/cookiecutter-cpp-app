@@ -161,12 +161,11 @@ void Logger::fatal(const string& message) const
 
 void Logger::log(Level level, const string& message) const
 {
-    if (level < this->level) {
-        return;  // ignore messages of a lower severity
-    }
-    const Record record{level, name, message};
-    for (auto& handler: handlers) {
-        handler->handle(record);
+    if (level >= this->level) {
+        const Record record{level, name, message};
+        for (auto& handler: handlers) {
+            handler->handle(record);
+        }
     }
     return;
 }
