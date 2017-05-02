@@ -4,10 +4,16 @@
 /// test runner.
 ///
 #include <cstdlib>
+#include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 #include <gtest/gtest.h>
 
+using std::clog;
+using std::cout;
+using std::ostringstream;
+using std::streambuf;
 using std::string;
 using std::vector;
 using testing::Test;
@@ -28,13 +34,21 @@ class CliTest: public Test
 protected:
     /// Set up test fixture.
     ///
-    CliTest() {}   
+    /// Output to std::cout and std::clog will be captured for the lifetime of
+    /// the fixture.
+    ///
+    CliTest() :
+        outbuf{cout.rdbuf(stdout.rdbuf())},
+        errbuf{clog.rdbuf(stderr.rdbuf())} 
+    {}  
     
     /// Tear down the test fixture.
     ///
     ~CliTest() 
     { 
         dealloc(); 
+        cout.rdbuf(outbuf);
+        clog.rdbuf(errbuf);
     }
 
     /// Set command-line arguments.
@@ -55,6 +69,10 @@ protected:
     
     int argc{0};
     char** argv{nullptr};
+    ostringstream stdout;
+    ostringstream stderr;
+    streambuf* const outbuf;
+    streambuf* const errbuf;
     
 private:
     /// Deallocate argv.
@@ -75,10 +93,10 @@ private:
 ///
 TEST_F(CliTest, help)
 {
-    // TODO: Test correct output to cout.
     for (auto flag: vector<string>{"-h", "--help"}) {
         cmdl({"{{ cookiecutter.app_name }}", flag});
-        ASSERT_EQ(cli(argc, argv), EXIT_SUCCESS);        
+        ASSERT_EQ(cli(argc, argv), EXIT_SUCCESS);
+        ASSERT_NE(stdout.str().find("{{ cookiecutter.app_name }}"), string::npos);
     }
     return;
 }
@@ -92,6 +110,20 @@ TEST_F(CliTest, version)
     for (auto flag: vector<string>{"-v", "--version"}) {
         cmdl({"{{ cookiecutter.app_name }}", flag});
         ASSERT_EQ(cli(argc, argv), EXIT_SUCCESS);        
+        ASSERT_NE(stdout.str().find("v{{ cookiecutter.project_version }}"), string::npos);
+    }
+    return;
+}
+
+
+/// Test the --warn option.
+///
+TEST_F(CliTest, warn)
+{
+    for (auto flag: vector<string>{"-w", "--warn"}) {
+        cmdl({"{{ cookiecutter.app_name }}", flag, "info"});
+        ASSERT_EQ(cli(argc, argv), EXIT_SUCCESS);
+        ASSERT_NE(stderr.str().find("starting application"), string::npos);    
     }
     return;
 }
@@ -104,6 +136,7 @@ TEST_F(CliTest, invalid)
     for (auto flag: vector<string>{"-x", "--help=badarg"}) {
         cmdl({"{{ cookiecutter.app_name }}", flag});
         ASSERT_EQ(cli(argc, argv), EXIT_FAILURE);        
+        ASSERT_NE(stdout.str().find("{{ cookiecutter.app_name }}"), string::npos);
     }
     return;
 }
