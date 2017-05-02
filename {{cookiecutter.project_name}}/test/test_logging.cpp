@@ -51,6 +51,17 @@ protected:
 INSTANTIATE_TEST_CASE_P(Levels, LoggerTest, Values(INFO, INFO, WARN, ERROR, FATAL));
 
 
+/// Test the stop() method.
+///
+TEST_P(LoggerTest, stop)
+{
+    logger.stop();
+    logger.log(level, message);
+    ASSERT_EQ(stream.str().find(message), string::npos); 
+    return;  
+}
+
+
 /// Test the log() method.
 ///
 TEST_P(LoggerTest, log)

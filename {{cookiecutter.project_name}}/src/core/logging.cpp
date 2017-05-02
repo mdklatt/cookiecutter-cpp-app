@@ -34,6 +34,8 @@ Logger Logging::logger{"{{ cookiecutter.app_name }}"};
 
 string Logging::level(Level val)
 {
+    // This does not handle NOTSET because it is a private implementation 
+    // detail of this module.
     static const std::map<Level, string> levels{
         {DEBUG, "DEBUG"},
         {INFO, "INFO"},
@@ -47,6 +49,8 @@ string Logging::level(Level val)
 
 Level Logging::level(string str)
 {
+    // This does not handle NOTSET because it is a private implementation 
+    // detail of this module.
     static const std::map<string, Level> levels{
         {"DEBUG", DEBUG},
         {"INFO", INFO},
@@ -102,6 +106,13 @@ void Logger::start(Level level, ostream& stream)
 {
     this->level = level;
     handler(StreamHandler(level, stream));
+    return;
+}
+
+
+void Logger::stop()
+{
+    handlers.clear();
     return;
 }
 

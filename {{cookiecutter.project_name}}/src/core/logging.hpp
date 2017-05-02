@@ -172,6 +172,13 @@ namespace Logging
         /// @param stream output stream
         void start(Level level=WARN, std::ostream& stream=std::clog);
 
+        /// Stop logging with this logger.
+        ///
+        /// All handlers will be removed from the logger, and it will no longer
+        /// emit any messages.
+        ///
+        void stop();
+
         /// Add a handler to this logger.
         ///
         /// Handlers are responsible for actually emitting the records sent to
