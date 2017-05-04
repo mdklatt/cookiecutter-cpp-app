@@ -1,11 +1,14 @@
 /// Implemenation of the cmd1 sample command.
 ///
-#include <iostream>
+#include <cstdlib>
 #include "api.hpp"
+#include "../core/logging.hpp"
+
+using Logging::logger;
 
 
-void cmd1(const std::string& arg)
+int cmd1()
 {
-    std::cout << "cmd1 called with argument " << arg << std::endl;
-    return;
+    logger.debug("executing cmd1");    
+    return EXIT_SUCCESS;
 }

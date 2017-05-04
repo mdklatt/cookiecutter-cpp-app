@@ -7,6 +7,7 @@ project(test_{{ cookiecutter.app_name }})
 set(TEST_SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/src/cli.cpp
     ${CORE_SOURCE_FILES}
+    ${API_SOURCE_FILES}
     ${CMAKE_SOURCE_DIR}/test/CommandLineTest.cpp
     ${CMAKE_SOURCE_DIR}/test/test_cli.cpp    
     ${CMAKE_SOURCE_DIR}/test/test_logging.cpp    

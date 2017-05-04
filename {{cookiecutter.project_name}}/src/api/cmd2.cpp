@@ -1,11 +1,14 @@
 /// Implemenation of the cmd2 sample command.
 ///
-#include <iostream>
+#include <cstdlib>
 #include "api.hpp"
+#include "../core/logging.hpp"
+
+using Logging::logger;
 
 
-void cmd2(const std::string& arg)
+int cmd2()
 {
-    std::cout << "cmd2 called with argument " << arg << std::endl;
-    return;
+    logger.debug("executing cmd2");
+    return EXIT_SUCCESS;
 }

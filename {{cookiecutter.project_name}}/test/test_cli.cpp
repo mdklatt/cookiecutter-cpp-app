@@ -121,7 +121,7 @@ TEST_F(CliTest, version)
 TEST_F(CliTest, warn)
 {
     for (auto flag: vector<string>{"-w", "--warn"}) {
-        cmdl({"{{ cookiecutter.app_name }}", flag, "info"});
+        cmdl({"{{ cookiecutter.app_name }}", flag, "info", "cmd1"});
         ASSERT_EQ(cli(argc, argv), EXIT_SUCCESS);
         ASSERT_NE(stderr.str().find("starting application"), string::npos);    
     }
@@ -137,6 +137,19 @@ TEST_F(CliTest, invalid)
         cmdl({"{{ cookiecutter.app_name }}", flag});
         ASSERT_EQ(cli(argc, argv), EXIT_FAILURE);        
         ASSERT_NE(stdout.str().find("{{ cookiecutter.app_name }}"), string::npos);
+    }
+    return;
+}
+
+
+/// Test subcommand arguments.
+///
+TEST_F(CliTest, subcommand)
+{
+    for (auto subcmd: vector<string>{"cmd1", "cmd2"}) {
+        cmdl({"{{ cookiecutter.app_name }}", "--warn=debug", subcmd});
+        ASSERT_EQ(cli(argc, argv), EXIT_SUCCESS);        
+        ASSERT_NE(stderr.str().find(subcmd), string::npos);        
     }
     return;
 }

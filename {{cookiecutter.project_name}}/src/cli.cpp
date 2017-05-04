@@ -74,5 +74,20 @@ int cli(int argc, char* argv[])
     }
     logger.start(level(warn));
     logger.info("starting application");
-    return EXIT_SUCCESS;
+    int status;
+    if (optind == argc) {
+        help();
+        status = EXIT_FAILURE;        
+    }
+    else if (argv[optind] == string("cmd1")) {
+        status = cmd1();
+    }
+    else if (argv[optind] == string("cmd2")) {
+        status = cmd2();
+    }
+    else {
+        help();
+        status = EXIT_FAILURE;        
+    }
+    return status;
 }
