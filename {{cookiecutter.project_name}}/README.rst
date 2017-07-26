@@ -1,5 +1,3 @@
-..  README for the {{ cookiecutter.app_name }} application.
-
 {% set delim = "=" * cookiecutter.app_name|length %}
 {{ delim }}
 {{ cookiecutter.app_name }}
@@ -7,12 +5,13 @@
 
 This is the {{ cookiecutter.app_name }} application.
 
+
 Building
 ========
 
 Application
 -----------
-..  code-block::
+.. code-block:: console
 
     $ mkdir build && cd build
     $ cmake -DCMAKE_BUILD_TYPE=Debug ../
@@ -21,7 +20,7 @@ Application
 
 Documentation (Doxygen)
 -----------------------
-..  code-block::
+.. code-block:: console
 
     $ cd doc/doxygen
     $ doxygen Doxyfile
@@ -29,14 +28,13 @@ Documentation (Doxygen)
     
 Documenation (Sphinx)
 ---------------------
-..  _Breathe: https://breathe.readthedocs.io/en/latest/
+.. _Breathe: https://breathe.readthedocs.io/en/latest/
 
-..  code-block::
+.. code-block:: console
 
-    $ cd doc/sphinx
-    $ make html
+    $ cd doc/sphinx && make make html
     
-Doxygen documentation can be integreted into Sphinx using the* `Breathe`_
+Doxygen documentation can be integreted into Sphinx using the `Breathe`_
 extension.
 
 
@@ -45,7 +43,7 @@ Running
 
 Application
 -----------
-..  code-block::
+.. code-block:: console
 
     $ cd build
     $ ./{{ cookiecutter.app_name }} --help
@@ -53,7 +51,7 @@ Application
 
 Test Suite
 ----------
-..  code-block::
+.. code-block:: console
 
     $ cd build
     $ test/{{ cookiecutter.app_name }}_test
