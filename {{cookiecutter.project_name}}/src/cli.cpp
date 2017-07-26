@@ -5,7 +5,6 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
-#include "core/CommandLine.hpp"
 #include "core/logging.hpp"
 #include "api/api.hpp"
 #include "version.h"
@@ -15,15 +14,26 @@ using Logging::level;
 using std::cout;
 using std::endl;
 using std::string;
-using std::vector;
 
 
-/// Display a help message.
-///
-void help()
-{
-    cout << "{{ cookiecutter.app_name }} [-h]" << endl;
-    return;
+namespace {  // internal linkage
+    
+    /// Display a help message.
+    ///
+    void help()
+    {
+        cout << "{{ cookiecutter.app_name }} [-h]" << endl;
+        return;
+    }
+
+
+    /// Display the version string.
+    ///
+    void version()
+    {
+        cout << "{{ cookiecutter.app_name }} v" <<  {{ cookiecutter.app_name|upper }}_VERSION << endl;
+        return;
+    }
 }
 
 
@@ -59,8 +69,8 @@ int cli(int argc, char* argv[])
             case 'h': 
                 help();
                 return EXIT_SUCCESS;
-            case 'v': 
-                cout << "{{ cookiecutter.app_name }} v" <<  {{ cookiecutter.app_name|upper }}_VERSION << endl;
+            case 'v':
+                version();
                 return EXIT_SUCCESS;
             case 'w':
                 warn = optarg;
@@ -74,10 +84,9 @@ int cli(int argc, char* argv[])
     }
     logger.start(level(warn));
     logger.info("starting application");
-    int status;
+    int status{EXIT_FAILURE};
     if (optind == argc) {
         help();
-        status = EXIT_FAILURE;        
     }
     else if (argv[optind] == string("cmd1")) {
         status = cmd1();
@@ -87,7 +96,7 @@ int cli(int argc, char* argv[])
     }
     else {
         help();
-        status = EXIT_FAILURE;        
     }
+    logger.info("application complete");
     return status;
 }
