@@ -142,6 +142,10 @@ namespace Logging
     private:
         /// Convert the record time to a string.
         ///
+        /// The format matches the ISO8601 format (YYYY-mm-dd HH:MM:SS,sss)
+        /// commonly used by other logging frameworks like Log4x and the Python
+        /// logging module.
+        ///
         /// @param record logger record
         /// @return record time
         std::string time(const Record& record) const;

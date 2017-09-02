@@ -70,7 +70,7 @@ Level Logging::level(string str)
 
 void StreamHandler::emit(const Record& record) const
 {
-    // TODO: Allows user-specified formatting.
+    // TODO: Allow user-specified formatting.
     const list<string> fields{time(record), Logging::level(record.level), record.name, record.message};
     const auto last(prev(fields.end()));
     copy(fields.begin(), last, ostream_iterator<string>{stream, ";"});
@@ -86,10 +86,10 @@ string StreamHandler::time(const Record& record) const
     const auto time_info(std::localtime(&time));
     const long msecs(duration_cast<milliseconds>(elapsed).count() % 1000);
     char buffer[23+1];
-    if (strftime(&buffer[0], 19+1, "%FT%T", time_info) != 19) {
+    if (strftime(&buffer[0], 19+1, "%F %T", time_info) != 19) {
         throw runtime_error("error converting time to string");
     }
-    if (snprintf(&buffer[19], 4+1, ".%03ld", msecs) != 4) {
+    if (snprintf(&buffer[19], 4+1, ",%03ld", msecs) != 4) {
         throw runtime_error("error converting time to string");
     }
     return string(buffer);
