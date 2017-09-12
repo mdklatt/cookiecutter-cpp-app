@@ -13,6 +13,7 @@ set(API_SOURCE_FILES
 )
 set(CORE_SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/src/core/CommandLine.cpp
+    ${CMAKE_SOURCE_DIR}/src/core/configure.cpp    
     ${CMAKE_SOURCE_DIR}/src/core/logging.cpp
 )
 set(APP_SOURCE_FILES
@@ -23,5 +24,8 @@ set(APP_SOURCE_FILES
 )
 
 set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++11 -Wall")
+include_directories(
+    ${CMAKE_SOURCE_DIR}/src
+)
 add_executable(${PROJECT_NAME} ${APP_SOURCE_FILES})
 add_subdirectory(test)
