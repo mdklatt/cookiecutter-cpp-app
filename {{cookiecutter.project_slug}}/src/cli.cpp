@@ -1,4 +1,4 @@
-/// Implementation of the {{ cookiecutter.project_name}} CLI.
+/// Implementation of the {{ cookiecutter.app_name }} CLI.
 ///
 /// @file
 #include <getopt.h>

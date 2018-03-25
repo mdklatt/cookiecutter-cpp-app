@@ -1,4 +1,4 @@
-/// Define the {{ cookiecutter.project_name }} API.
+/// Define the {{ cookiecutter.app_name }} API.
 ///
 /// @file
 #ifndef {{ cookiecutter.app_name|upper }}_API_HPP
