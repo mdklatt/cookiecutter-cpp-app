@@ -37,15 +37,15 @@ Usage
 =====
 Install Python requirements for using the template:
 
-..  code-block::
+.. code-block:: console
 
-    $ pip install --requirement=requirements.txt --user 
+    $ python -m pip install --requirement=requirements.txt --user 
 
 
-..  _GitHub: https://github.com/mdklatt/cookiecutter-cpp-app
+.. _GitHub: https://github.com/mdklatt/cookiecutter-cpp-app
 
 Create a new project directly from the template on `GitHub`_:
 
-..  code-block::
+.. code-block:: console
    
     $ cookiecutter gh:mdklatt/cookiecutter-cpp-app

@@ -4,13 +4,15 @@ This is executed in the new project directory. Before execution it is rendered
 with the template engine, so it has access to all template variables.
 
 """
-from __future__ import print_function
-
 from os import renames
 from os.path import join
 from shutil import rmtree
 from tempfile import mkdtemp
-from urllib2 import urlopen
+try:
+    from urllib.request import urlopen
+except ImportError:  
+    # Python 2 compatibilty.
+    from urllib2 import urlopen
 from zipfile import ZipFile
 
 
