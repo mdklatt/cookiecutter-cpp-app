@@ -32,7 +32,7 @@ Documenation (Sphinx)
 
 .. code-block:: console
 
-    $ cd doc/sphinx && make make html
+    $ sphinx-build -b html doc/sphinx doc/sphinx/_build/html
     
 Doxygen documentation can be integreted into Sphinx using the `Breathe`_
 extension.
