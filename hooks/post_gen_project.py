@@ -23,7 +23,7 @@ def get_googletest():
     print(f"downloading Google Test ({release:s})")
     if release != "master":
         release = f"release-{release:s}"
-    libroot =  Path("test", "lib", "gtest")
+    libroot =  Path("test", "vendor", "googletest")
     libroot.mkdir(parents=True, exist_ok=True)
     with TemporaryDirectory() as tmpdir:
         # Extract the downloaded zip file to a temporary directory. ZipFile

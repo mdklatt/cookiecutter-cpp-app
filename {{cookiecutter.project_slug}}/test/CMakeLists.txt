@@ -8,13 +8,13 @@ set(TEST_SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/src/cli.cpp
     ${CORE_SOURCE_FILES}
     ${API_SOURCE_FILES}
-    ${CMAKE_CURRENT_LIST_DIR}/CommandLineTest.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/test_cli.cpp    
-    ${CMAKE_CURRENT_LIST_DIR}/test_configure.cpp    
-    ${CMAKE_CURRENT_LIST_DIR}/test_logging.cpp    
+    ${CMAKE_CURRENT_LIST_DIR}/src/CommandLineTest.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/src/test_cli.cpp    
+    ${CMAKE_CURRENT_LIST_DIR}/src/test_configure.cpp    
+    ${CMAKE_CURRENT_LIST_DIR}/src/test_logging.cpp    
 )
 
-add_subdirectory(lib/gtest)
+add_subdirectory(vendor/googletest)
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
 )
