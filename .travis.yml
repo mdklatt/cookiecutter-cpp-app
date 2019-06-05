@@ -13,12 +13,12 @@ branches:
     - master
     - dev
 
-dist: trusty  # beta; needed for C++11
+dist: xenial
 
 before_script:
   # Install Cookiecutter. Because this is a C++ project Travis does not create
   # a Python virtualenv, so pip needs to install locally.
-  - pyenv local 3.6.3
+  - pyenv local 3.6.7
   - python -m pip install --requirement=requirements.txt --user
   
 script:
