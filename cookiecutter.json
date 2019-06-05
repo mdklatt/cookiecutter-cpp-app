@@ -3,7 +3,7 @@
     "app_name": "{{ cookiecutter.project_slug }}",
     "author_name": "",
     "author_email": "",
-    "project_version": "0.1.0.dev0",
+    "project_version": "0.1.0.0",
     "googletest_release": "master",
     "sphinx_theme": "alabaster"
 }

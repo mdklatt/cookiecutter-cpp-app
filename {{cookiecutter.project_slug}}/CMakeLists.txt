@@ -1,11 +1,13 @@
-## CMake build file for the {{ cookiecutter.app_name }} application.
+## Build the {{ cookiecutter.app_name }} application and its test suite.
 ##
-## This will build the application itself and its test suite. Compiled binaries
-## will be written to build/${CMAKE_BUILD_TYPE}.
-##
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.12)
 
-project({{ cookiecutter.app_name }})
+project({{ cookiecutter.app_name }}
+    VERSION {{ cookiecutter.project_version }}
+    LANGUAGES CXX
+)
+
+set(EXECUTABLE {{ cookiecutter.app_name }})
 
 set(API_SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/src/api/cmd1.cpp
@@ -23,9 +25,31 @@ set(APP_SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/src/main.cpp
 )
 
-set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++11 -Wall")
-include_directories(
-    ${CMAKE_SOURCE_DIR}/src
+add_executable(${EXECUTABLE})
+
+target_sources(${EXECUTABLE}
+PRIVATE
+    ${API_SOURCE_FILES}
+    ${CORE_SOURCE_FILES}
+    ${CMAKE_SOURCE_DIR}/src/cli.cpp
+    ${CMAKE_SOURCE_DIR}/src/main.cpp
 )
-add_executable(${PROJECT_NAME} ${APP_SOURCE_FILES})
+
+target_include_directories(${EXECUTABLE}
+PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+)
+
+target_compile_features(${EXECUTABLE}
+PRIVATE
+    cxx_std_11
+)
+
+target_compile_options(${EXECUTABLE}
+PRIVATE
+    -Wall
+    -Wno-unknown-pragmas
+    $<$<CXX_COMPILER_ID:GNU>:-pedantic>
+)
+
 add_subdirectory(test)

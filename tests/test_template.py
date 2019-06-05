@@ -23,8 +23,8 @@ def main() -> int:
         cookiecutter(str(template), no_input=True, output_dir=tmpdir)
         name = defaults["project_slug"]
         cwd = Path(tmpdir) / name
-        for args in "-DCMAKE_BUILD_TYPE=Debug", "--build .":
-            check_call(split(f"cmake {args:s}"), cwd=cwd)
+        for opts in "-DCMAKE_BUILD_TYPE=Debug", "--build":
+            check_call(split(f"cmake {opts:s} ."), cwd=cwd)
         for command in f"./{name:s} -h", f"test/test_{name:s}":
             check_call(split(f"{command:s}"), cwd=cwd)
     return 0
