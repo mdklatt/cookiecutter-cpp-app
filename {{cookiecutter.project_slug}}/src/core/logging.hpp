@@ -79,6 +79,11 @@ namespace Logging
         /// @param record
         void handle(const Record& record) const;
 
+        /**
+         * Destructor.
+         */
+        virtual ~Handler() = default;
+
         /// Create a clone of this object.
         ///
         /// This must be defined by each derived class to return an object of

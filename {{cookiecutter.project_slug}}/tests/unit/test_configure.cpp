@@ -5,7 +5,6 @@
  * test runner.
  */
 #include "core/configure.hpp"
-#include "gtest_util.hpp"
 
 #include <gtest/gtest.h>
 #include <fstream>

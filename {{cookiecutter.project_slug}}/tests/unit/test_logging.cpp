@@ -48,7 +48,7 @@ protected:
     std::ostringstream stream;
 };
 
-INSTANTIATE_TEST_CASE_P(Levels, LoggerTest, Values(INFO, INFO, WARN, ERROR, FATAL));
+INSTANTIATE_TEST_SUITE_P(Levels, LoggerTest, Values(INFO, INFO, WARN, ERROR, FATAL));
 
 
 /// Test the stop() method.
