@@ -7,7 +7,7 @@
 #include <string>
 #include "core/logging.hpp"
 #include "api/api.hpp"
-#include "version.h"
+#include "version.hpp"
 
 using Logging::logger;
 using Logging::level;
@@ -23,15 +23,6 @@ namespace {  // internal linkage
     void help()
     {
         cout << "{{ cookiecutter.app_name }} [-h]" << endl;
-        return;
-    }
-
-
-    /// Display the version string.
-    ///
-    void version()
-    {
-        cout << "{{ cookiecutter.app_name }} v" <<  {{ cookiecutter.app_name|upper }}_VERSION << endl;
         return;
     }
 }
@@ -67,10 +58,10 @@ int cli(int argc, char* argv[])
         }
         switch (opt) {        
             case 'h': 
-                help();
+                cout << "{{ cookiecutter.app_name }} [-h]" << endl;
                 return EXIT_SUCCESS;
             case 'v':
-                version();
+                cout << "{{ cookiecutter.app_name }} v" << version() << endl;
                 return EXIT_SUCCESS;
             case 'w':
                 warn = optarg;

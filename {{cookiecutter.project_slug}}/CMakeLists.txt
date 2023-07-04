@@ -1,55 +1,27 @@
-## Build the {{ cookiecutter.app_name }} application and its test suite.
-##
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION {{ cookiecutter.cmake_version }})
 
 project({{ cookiecutter.app_name }}
-    VERSION {{ cookiecutter.project_version }}
+    VERSION {{ cookiecutter.project_version }}  # add build number to designate a dev version
     LANGUAGES CXX
 )
 
-set(EXECUTABLE {{ cookiecutter.app_name }})
+option(BUILD_DOCS "Build documentation" OFF)
 
-set(API_SOURCE_FILES
-    ${CMAKE_SOURCE_DIR}/src/api/cmd1.cpp
-    ${CMAKE_SOURCE_DIR}/src/api/cmd2.cpp
-)
-set(CORE_SOURCE_FILES
-    ${CMAKE_SOURCE_DIR}/src/core/CommandLine.cpp
-    ${CMAKE_SOURCE_DIR}/src/core/configure.cpp    
-    ${CMAKE_SOURCE_DIR}/src/core/logging.cpp
-)
-set(APP_SOURCE_FILES
-    ${API_SOURCE_FILES}
-    ${CORE_SOURCE_FILES}
-    ${CMAKE_SOURCE_DIR}/src/cli.cpp
-    ${CMAKE_SOURCE_DIR}/src/main.cpp
-)
+set(name ${PROJECT_NAME})
+set(CMAKE_CXX_STANDARD {{ cookiecutter.cpp_standard }})
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_executable(${EXECUTABLE})
+add_subdirectory(src)
 
-target_sources(${EXECUTABLE}
-PRIVATE
-    ${API_SOURCE_FILES}
-    ${CORE_SOURCE_FILES}
-    ${CMAKE_SOURCE_DIR}/src/cli.cpp
-    ${CMAKE_SOURCE_DIR}/src/main.cpp
-)
+# Including CTest here at the project root makes `ctest` runnable from the
+# build root. This is also necessary for CLion to generate a CTest Run
+# Configuration.
+include(CTest)
+if(BUILD_TESTING)  # defined by CTest module
+    add_subdirectory(tests/unit)
+endif()
 
-target_include_directories(${EXECUTABLE}
-PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/src
-)
-
-target_compile_features(${EXECUTABLE}
-PRIVATE
-    cxx_std_11
-)
-
-target_compile_options(${EXECUTABLE}
-PRIVATE
-    -Wall
-    -Wno-unknown-pragmas
-    $<$<CXX_COMPILER_ID:GNU>:-pedantic>
-)
-
-add_subdirectory(test)
+if(BUILD_DOCS)
+    add_subdirectory(docs)
+endif()

@@ -1,9 +1,11 @@
 {
-    "project_slug": "cppapp",
-    "app_name": "{{ cookiecutter.project_slug }}",
+    "app_name": "cppapp",
+    "project_slug": "{{ cookiecutter.app_name }}",
     "author_name": "",
     "author_email": "",
     "project_version": "0.1.0.0",
-    "googletest_release": "master",
+    "cmake_version": "3.22",
+    "googletest_version": "v1.13.0",
+    "cpp_standard": "17",
     "sphinx_theme": "alabaster"
 }

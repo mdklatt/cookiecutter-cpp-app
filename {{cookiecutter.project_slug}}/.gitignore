@@ -6,11 +6,6 @@
 *.dll
 
 
-# Ignore Vagrant runtime files.
-
-.vagrant/
-
-
 # Ignore settings for various IDEs.
 
 .idea/
