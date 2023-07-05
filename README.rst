@@ -1,51 +1,79 @@
-================================
+################################
 C++ Application Project Template
-================================
-..  |travis.png| image:: https://travis-ci.org/mdklatt/cookiecutter-cpp-app.png?branch=master
-    :alt: Travis CI build status
-    :target: `travis`_
-..  _travis: https://travis-ci.org/mdklatt/cookiecutter-cpp-app
-..  _Cookiecutter: http://cookiecutter.readthedocs.org
+################################
 
-|travis.png|
-
-This is a `Cookiecutter`_ template for creating a C++ application project.
+|c++17|
+|cmake|
+|license|
+|tests|
 
 
-Template Project Features
-=========================
-..  _Cmake: https://cmake.org 
-..  _Google Test: https://github.com/google/googletest
-..  _Google install: https://github.com/google/googletest/blob/master/googletest/docs/FAQ.md#why-is-it-not-recommended-to-install-a-pre-compiled-copy-of-google-test-for-example-into-usrlocal
-..  _Doxygen: http://www.stack.nl/~dimitri/doxygen
-..  _Sphinx: http://sphinx-doc.org
-..  _MIT License: http://choosealicense.com/licenses/mit
-
-* `CMake`_ builds
-* `Google Test`_ test suite
-* `Doxygen`_ and `Sphinx`_ documentation
-* `MIT License`_
+This is a `Cookiecutter`_ template for creating a C++ application project that
+uses modern CMake practices (*e.g.*  `It's Time To Do CMake Right`_).
 
 
-Template Application Features
-=============================
-* CLI with subcommands
-* Logging (coming soon)
+**Project features**:
+
+- C++17
+- `CMake`_ builds
+- `Google Test`_ test suite
+- `Doxygen`_ documentation
+- `MIT License`_
 
 
+**Application features**:
+
+- CLI with subcommands
+- Logging
+- Hierarchical `TOML`_ configuration (TODO)
+
+
+=====
 Usage
 =====
+
 Install Python requirements for using the template:
 
-.. code-block:: console
+.. code-block::
 
-    $ python -m pip install --requirement=requirements.txt --user 
+    $ python -m pip install -r requirements.txt
 
-
-.. _GitHub: https://github.com/mdklatt/cookiecutter-cpp-app
 
 Create a new project directly from the template on `GitHub`_:
 
-.. code-block:: console
-   
+.. code-block::
+
     $ cookiecutter gh:mdklatt/cookiecutter-cpp-app
+
+
+===========
+Development
+===========
+
+Create a local development environment and run template tests:
+
+.. code-block::
+
+    $ make dev test
+
+
+.. |c++17| image:: https://img.shields.io/static/v1?label=c%2B%2B&message=17&color=informational
+   :alt: C++17
+.. |cmake| image:: https://img.shields.io/static/v1?label=cmake&message=3.16&color=informational
+   :alt: CMake 3.16
+.. |license| image:: https://img.shields.io/github/license/mdklatt/cookiecutter-cpp-app
+   :alt: MIT License
+   :target: `MIT License`_
+.. |tests| image:: https://github.com/mdklatt/cookiecutter-cpp-app/actions/workflows/test.yml/badge.svg
+   :alt: CI Test
+   :target: `GitHub Actions`_
+
+.. _CMake: https://cmake.org
+.. _Cookiecutter: http://cookiecutter.readthedocs.org
+.. _Doxygen: http://www.stack.nl/~dimitri/doxygen
+.. _Google Test: https://github.com/google/googletest
+.. _GitHub: https://github.com/mdklatt/cookiecutter-cpp-app
+.. _GitHub Actions: https://github.com/mdklatt/cookiecutter-cpp-app/actions/workflows/test.yml
+.. _It's Time To Do CMake Right: https://pabloariasal.github.io/2018/02/19/its-time-to-do-cmake-right/
+.. _MIT License: http://choosealicense.com/licenses/mit
+.. _TOML: https://toml.io/en/

@@ -1,12 +1,21 @@
-# Ignore pyenv files.
+# Ignore Python build artifacts.
+
+*.egg-info/
+*.pyc
+*.pyo
+
+
+# Ignore Python environments.
 
 .python-version
+.venv*/
 
 
 # Ignore settings for various IDEs.
 
 .idea/
 .project/
+.pydevproject/
 .vscode/
 nbproject/
 *.code-workspace
