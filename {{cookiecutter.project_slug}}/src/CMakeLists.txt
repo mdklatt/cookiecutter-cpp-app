@@ -22,7 +22,7 @@ PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>  # CMake-generated files
 )
 target_compile_options(${name}_obj
-PUBLIC
+PRIVATE
     -Wall
     $<$<CXX_COMPILER_ID:GNU>:-pedantic>
 )
