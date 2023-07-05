@@ -5,7 +5,6 @@
  * test runner.
  */
 #include "core/configure.hpp"
-
 #include <gtest/gtest.h>
 #include <fstream>
 #include <vector>
@@ -53,7 +52,7 @@ TEST_F(ConfigTest, ctor_stream) {
  * Test the file constructor.
  */
 TEST_F(ConfigTest, ctor_path) {
-    Config config(path);
+    Config config{path};
     for (size_t pos(0); pos != keys.size(); ++ pos) {
         ASSERT_EQ(config.get(keys[pos]), values[pos]);
         ASSERT_EQ(config.get(keys[pos], "section1"), values[pos]);

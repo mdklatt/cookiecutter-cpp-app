@@ -1,14 +1,15 @@
-/// Test suite for the cli module.
-///
-/// Link all test files with the `gtest_main` library to create a command-line 
-/// test runner.
-///
+/**
+ * Test suite for the cli module.
+ *
+ * Link all test files with the `gtest_main` library to create a command-line
+ * test runner.
+ */
+#include <gtest/gtest.h>
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
-#include <gtest/gtest.h>
 
 using std::clog;
 using std::cout;
@@ -19,42 +20,43 @@ using std::vector;
 using testing::Test;
 
 
-extern int cli(int, char* []);  // cli.cpp
+extern int cli(int, char* []);  // defined in cli.cpp
 
 
-/// Test fixture for the cli module test suite.
-///
-/// This is used to group tests and provide common set-up and tear-down
-/// code. A new test fixture is created for each test to prevent any side 
-/// effects between tests. Member variables and methods are injected into
-/// each test that uses this fixture.
-///
-class CliTest: public Test
-{
+/**
+ * Test fixture for the cli module test suite.
+ *
+ * This is used to group tests and provide common set-up and tear-down
+ * code. A new test fixture is created for each test to prevent any side
+ * effects between tests. Member variables and methods are injected into
+ * each test that uses this fixture.
+ */
+class CliTest: public Test {
 protected:
-    /// Set up test fixture.
-    ///
-    /// Output to std::cout and std::clog will be captured for the lifetime of
-    /// the fixture.
-    ///
+    /**
+     * Set up test fixture.
+     *
+     * Output to std::cout and std::clog will be captured for the lifetime of
+     * the fixture.
+     */
     CliTest() :
         outbuf{cout.rdbuf(stdout.rdbuf())},
         errbuf{clog.rdbuf(stderr.rdbuf())} 
     {}  
-    
-    /// Tear down the test fixture.
-    ///
-    ~CliTest() 
-    { 
+
+    /**
+     * Tear down the test fixture.
+     */
+    ~CliTest() {
         dealloc(); 
         cout.rdbuf(outbuf);
         clog.rdbuf(errbuf);
     }
 
-    /// Set command-line arguments.
-    ///
-    void cmdl(const vector<string>& args)
-    {
+    /**
+     * Set command-line arguments.
+     */
+    void cmdl(const vector<string>& args) {
         dealloc();
         argc = static_cast<int>(args.size());
         argv = new char*[argc];
@@ -75,10 +77,10 @@ protected:
     streambuf* const errbuf;
     
 private:
-    /// Deallocate argv.
-    ///
-    void dealloc()
-    {
+    /**
+     * Deallocate argv.
+     */
+    void dealloc() {
         for (int pos{0}; pos < argc; ++pos) {
             delete[] argv[pos];
         }
@@ -89,10 +91,11 @@ private:
     }
 };
 
-/// Test the --help option.
-///
-TEST_F(CliTest, help)
-{
+
+/**
+ * Test the --help option.
+ */
+TEST_F(CliTest, help) {
     for (auto flag: vector<string>{"-h", "--help"}) {
         cmdl({"{{ cookiecutter.app_name }}", flag});
         ASSERT_EQ(cli(argc, argv), EXIT_SUCCESS);
@@ -102,10 +105,10 @@ TEST_F(CliTest, help)
 }
 
 
-/// Test the --version option.
-///
-TEST_F(CliTest, version)
-{
+/**
+ * Test the --version option.
+ */
+TEST_F(CliTest, version) {
     // TODO: Test correct output to cout.
     for (auto flag: vector<string>{"-v", "--version"}) {
         cmdl({"{{ cookiecutter.app_name }}", flag});
@@ -116,10 +119,10 @@ TEST_F(CliTest, version)
 }
 
 
-/// Test the --warn option.
-///
-TEST_F(CliTest, warn)
-{
+/**
+ * Test the --warn option.
+ */
+TEST_F(CliTest, warn) {
     for (auto flag: vector<string>{"-w", "--warn"}) {
         cmdl({"{{ cookiecutter.app_name }}", flag, "info", "cmd1"});
         ASSERT_EQ(cli(argc, argv), EXIT_SUCCESS);
@@ -129,10 +132,10 @@ TEST_F(CliTest, warn)
 }
 
 
-/// Test invalid options.
-///
-TEST_F(CliTest, invalid)
-{
+/**
+ * Test invalid options.
+ */
+TEST_F(CliTest, invalid) {
     for (auto flag: vector<string>{"-x", "--help=badarg"}) {
         cmdl({"{{ cookiecutter.app_name }}", flag});
         ASSERT_EQ(cli(argc, argv), EXIT_FAILURE);        
@@ -142,10 +145,10 @@ TEST_F(CliTest, invalid)
 }
 
 
-/// Test subcommand arguments.
-///
-TEST_F(CliTest, subcommand)
-{
+/**
+ * Test subcommand arguments.
+ */
+TEST_F(CliTest, subcommand) {
     for (auto subcmd: vector<string>{"cmd1", "cmd2"}) {
         cmdl({"{{ cookiecutter.app_name }}", "--warn=debug", subcmd});
         ASSERT_EQ(cli(argc, argv), EXIT_SUCCESS);        

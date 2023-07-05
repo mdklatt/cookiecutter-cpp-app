@@ -1,11 +1,12 @@
-/// Implementation of the configure module.
-///
+/**
+ * Implementation of the configure module.
+ */
+#include "configure.hpp"
 #include <cctype>
 #include <fstream>
 #include <iostream>
 #include <istream>
 #include <stdexcept>
-#include "configure.hpp"
 
 
 using std::getline;
@@ -21,20 +22,17 @@ using std::to_string;
 using namespace configure;
 
 
-Config::Config(istream& stream)
-{
+Config::Config(istream& stream) {
     load(stream);
 }
 
 
-Config::Config(const std::string& path)
-{
+Config::Config(const std::string& path) {
     load(path);
 }
 
 
-void Config::load(const string& path)
-{
+void Config::load(const string& path) {
     ifstream stream(path);
     if (not stream) {
         throw runtime_error("could not open config file " + path);
@@ -44,8 +42,7 @@ void Config::load(const string& path)
 }
 
 
-void Config::load(istream& stream)
-{
+void Config::load(istream& stream) {
     // This is intended as a proof-of-concept for application configuration,
     // not a complete INI parser.
     const string whitespace(" \t\n\r\f\v");  // FIXME: not locale aware
@@ -82,16 +79,14 @@ void Config::load(istream& stream)
 }
 
 
-void Config::set(const string& key, const string& value, const string& section)
-{
+void Config::set(const string& key, const string& value, const string& section) {
     data.emplace(section, ValueMap::mapped_type());
     data[section][key] = value;    
     return;
 }
     
 
-string Config::get(const string& key, const string& section) const
-{
+string Config::get(const string& key, const string& section) const {
     string value;
     try {
         value = data.at(section).at(key);

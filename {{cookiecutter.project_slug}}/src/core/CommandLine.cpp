@@ -1,12 +1,13 @@
-/// Implementation of the CommandLine class.
-///
+/**
+ * Implementation of the CommandLine class.
+ */
+#include "CommandLine.hpp"
 #include <cstdlib>
 #include <algorithm>
 #include <functional>
 #include <iostream>
 #include <sstream>
 #include <utility>
-#include "CommandLine.hpp"
 
 using std::find_if;
 using std::function;
@@ -20,8 +21,7 @@ using std::vector;
 
 CommandLine::CommandLine(bool strict, bool help) :
     strict(strict),
-    help(help)
-{
+    help(help) {
     if (help) {
         opt("help", 'h');
     }
@@ -29,14 +29,12 @@ CommandLine::CommandLine(bool strict, bool help) :
 }
 
 
-bool CommandLine::has_arg(const std::string& name) const
-{
+bool CommandLine::has_arg(const std::string& name) const {
     return arg_vals.find(name) != arg_vals.end();
 }
 
 
-void CommandLine::parse(int argc, char* argv[])
-{
+void CommandLine::parse(int argc, char* argv[]) {
     vector<string> vargv{argv, argv + argc};
     auto iter(vargv.begin());
     parse_argv(iter, vargv.end());
@@ -44,30 +42,26 @@ void CommandLine::parse(int argc, char* argv[])
 }
 
 
-void CommandLine::opt(const std::string& name, char flag, bool has_val)
-{
+void CommandLine::opt(const std::string& name, char flag, bool has_val) {
     opt_args.push_back(CommandLine::OptArg{name, flag, has_val});
     return;
 }
 
 
-void CommandLine::pos(const std::string& name, size_t count)
-{
+void CommandLine::pos(const std::string& name, size_t count) {
     pos_args.push_back(CommandLine::PosArg{name, count});
     return;
 }
 
 
-CommandLine& CommandLine::sub(const string& name)
-{
+CommandLine& CommandLine::sub(const string& name) {
     CommandLine cmdl{strict, help};
     sub_args.emplace(make_pair(name, std::move(cmdl)));  // invalidates cmdl
     return sub_args[name];
 }
 
 
-vector<string> CommandLine::operator[](const std::string& name) const
-{
+vector<string> CommandLine::operator[](const std::string& name) const {
     const auto range(arg_vals.equal_range(name));
     vector<string> values;
     for (auto iter(range.first); iter != range.second; ++iter) {
@@ -77,8 +71,7 @@ vector<string> CommandLine::operator[](const std::string& name) const
 }
 
 
-string CommandLine::usage() const
-{
+string CommandLine::usage() const {
     // TODO
     std::ostringstream buffer;
     buffer << "usage: " << name;
@@ -92,8 +85,7 @@ string CommandLine::usage() const
 }
 
 
-void CommandLine::parse_argv(ArgvIter& iter, const ArgvIter& end)
-{
+void CommandLine::parse_argv(ArgvIter& iter, const ArgvIter& end) {
     // If this is a subcommand, first argument will be the subcommand name.
     const_cast<string&>(name) = *iter++;
     parse_opts(iter, end);
@@ -108,8 +100,7 @@ void CommandLine::parse_argv(ArgvIter& iter, const ArgvIter& end)
 
 
 
-void CommandLine::parse_opts(ArgvIter& iter, const ArgvIter& end)
-{
+void CommandLine::parse_opts(ArgvIter& iter, const ArgvIter& end) {
     while (iter != end && is_opt(iter)) {
         // Process each option. At the end of the loop, 'argv_iter' will point
         // to the first positional argument.
@@ -158,8 +149,7 @@ void CommandLine::parse_opts(ArgvIter& iter, const ArgvIter& end)
 }
 
 
-void CommandLine::parse_subs(ArgvIter& iter, const ArgvIter& end)
-{
+void CommandLine::parse_subs(ArgvIter& iter, const ArgvIter& end) {
     // Subcommands are parsed recursively. If this is a subcommand, it is
     // responsible for all further argument processing unless one of its own
     // subcommands is encountered, and so on.
@@ -183,8 +173,7 @@ void CommandLine::parse_subs(ArgvIter& iter, const ArgvIter& end)
 }
 
 
-void CommandLine::parse_args(ArgvIter& iter, const ArgvIter& end)
-{
+void CommandLine::parse_args(ArgvIter& iter, const ArgvIter& end) {
     auto last(iter);
     for (auto const& arg: pos_args) {
         if (arg.count == 0) {
@@ -208,8 +197,7 @@ void CommandLine::parse_args(ArgvIter& iter, const ArgvIter& end)
 }
 
 
-bool CommandLine::is_opt(ArgvIter& iter)
-{
+bool CommandLine::is_opt(ArgvIter& iter) {
     // Return true if this is an optional argument.
     auto arg(*iter);
     if (arg[0] != CommandLine::optdel) {
@@ -227,11 +215,10 @@ bool CommandLine::is_opt(ArgvIter& iter)
         return false;
     }
     return true;
-};
+}
 
 
-tuple<string, string, bool> CommandLine::read_opt(ArgvIter& iter)
-{
+tuple<string, string, bool> CommandLine::read_opt(ArgvIter& iter) {
     auto opt(*iter++);
     auto pos(opt.find_first_not_of(CommandLine::optdel));
     auto is_long(pos > 1);
@@ -252,4 +239,4 @@ tuple<string, string, bool> CommandLine::read_opt(ArgvIter& iter)
         }
     }
     return make_tuple(opt, val, is_long);
-};
+}

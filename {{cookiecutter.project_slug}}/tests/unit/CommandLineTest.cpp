@@ -1,8 +1,9 @@
-/// Test suite for the CommandLine class.
-///
-/// Link all test files with the `gtest_main` library to create a command-line 
-/// test runner.
-///
+/**
+ * Test suite for the CommandLine class.
+ *
+ * Link all test files with the `gtest_main` library to create a command-line 
+ * test runner.
+ */
 #include <cstring>  // strncpy
 #include <string>
 #include <vector>
@@ -17,28 +18,33 @@ using testing::Test;
 using testing::ExitedWithCode;
 
 
-/// CommandLine test fixture.
-///
-/// This is used to group tests and provide common set-up and tear-down
-/// code. A new test fixture is created for each test to prevent any side 
-/// effects between tests. Member variables and methods are injected into
-/// each test that uses this fixture.
-///
+/**
+ * CommandLine test fixture.
+ *
+ * This is used to group tests and provide common set-up and tear-down
+ * code. A new test fixture is created for each test to prevent any side 
+ * effects between tests. Member variables and methods are injected into
+ * each test that uses this fixture.
+ */
 class CommandLineTest: public Test
 {
 protected:
-    /// Set up test fixture.
-    ///
+    /**
+     * Set up test fixture.
+     */
     CommandLineTest() {}   
     
-    /// Tear down the test fixture.
-    ///
-    ~CommandLineTest() { dealloc(); }
+    /**
+     * Tear down the test fixture.
+     */
+    ~CommandLineTest() {
+        dealloc();
+    }
 
-    /// Set command-line arguments.
-    ///
-    void args(const vector<string>& args)
-    {
+    /**
+     * Set command-line arguments.
+     */
+    void args(const vector<string>& args) {
         dealloc();
         argc = static_cast<int>(args.size());
         argv = new char*[argc];
@@ -55,10 +61,10 @@ protected:
     char** argv{nullptr};
     
 private:
-    /// Deallocate argv.
-    ///
-    void dealloc()
-    {
+    /**
+     * Deallocate argv.
+     */
+    void dealloc() {
         for (int pos{0}; pos < argc; ++pos) {
             delete[] argv[pos];
         }
@@ -70,10 +76,10 @@ private:
 };
 
 
-/// Test the name attribute.
-///
-TEST_F(CommandLineTest, name)
-{
+/**
+ * Test the name attribute.
+ */
+TEST_F(CommandLineTest, name) {
     CommandLine cmdl;
     args({"cmd"});
     cmdl.parse(argc, argv);
@@ -82,10 +88,10 @@ TEST_F(CommandLineTest, name)
 }
 
 
-/// Test the parse() method for one positional argument.
-///
-TEST_F(CommandLineTest, parse_pos_one)
-{
+/**
+ * Test the parse() method for one positional argument.
+ */
+TEST_F(CommandLineTest, parse_pos_one) {
     CommandLine cmdl;
     cmdl.pos("pos", 1);
     args({"cmd", "abc", "123"});  // not strict, extra argument ignored
@@ -95,10 +101,10 @@ TEST_F(CommandLineTest, parse_pos_one)
 }
 
 
-/// Test the parse() method for all positional arguments.
-///
-TEST_F(CommandLineTest, parse_pos_all)
-{
+/**
+ * Test the parse() method for all positional arguments.
+ */
+TEST_F(CommandLineTest, parse_pos_all) {
     CommandLine cmdl;
     cmdl.pos("pos");
     args({"cmd", "abc", "123"});
@@ -108,10 +114,10 @@ TEST_F(CommandLineTest, parse_pos_all)
 }
 
 
-/// Test the parse() method with positional argument error handling.
-///
-TEST_F(CommandLineTest, parse_pos_err)
-{
+/**
+ * Test the parse() method with positional argument error handling.
+ */
+TEST_F(CommandLineTest, parse_pos_err) {
     CommandLine cmdl{true};
     cmdl.pos("pos", 1);
     args({"cmd"});  // not enough arguments
@@ -122,10 +128,10 @@ TEST_F(CommandLineTest, parse_pos_err)
 }
 
 
-/// Test the parse() method for a short option.
-///
-TEST_F(CommandLineTest, parse_opt_short)
-{
+/**
+ * Test the parse() method for a short option.
+ */
+TEST_F(CommandLineTest, parse_opt_short) {
     // Not strict, extra option should be ignored.
     args({"cmd", "-f", "-x"});
     CommandLine cmdl;
@@ -136,10 +142,10 @@ TEST_F(CommandLineTest, parse_opt_short)
 }
 
 
-/// Test the parse() method for a long option.
-///
-TEST_F(CommandLineTest, parse_opt_long)
-{
+/**
+ * Test the parse() method for a long option.
+ */
+TEST_F(CommandLineTest, parse_opt_long) {
     // Not strict, extra option should be ignored.
     args({"cmd", "--long", "--extra"});
     CommandLine cmdl;
@@ -150,10 +156,10 @@ TEST_F(CommandLineTest, parse_opt_long)
 }
 
 
-/// Test the parse() method for options that take values.
-///
-TEST_F(CommandLineTest, parse_opt_vals)
-{
+/**
+ * Test the parse() method for options that take values.
+ */
+TEST_F(CommandLineTest, parse_opt_vals) {
     // Verify that '--' ends option processing.
     args({"cmd", "-s", "abc", "-sabc", "--num", "123", "--str=def"});
     CommandLine cmdl;
@@ -166,10 +172,10 @@ TEST_F(CommandLineTest, parse_opt_vals)
 }
 
 
-/// Test the parse() method for a boolean option.
-///
-TEST_F(CommandLineTest, parse_opt_bool)
-{
+/**
+ * Test the parse() method for a boolean option.
+ */
+TEST_F(CommandLineTest, parse_opt_bool) {
     args({"cmd", "-b", "--bool"});  // verify that option is a singleton
     CommandLine cmdl;
     cmdl.opt("bool", 'b');
@@ -179,10 +185,10 @@ TEST_F(CommandLineTest, parse_opt_bool)
 }
 
 
-/// Test the parse() method with '--' to end option processing.
-///
-TEST_F(CommandLineTest, parse_opt_end)
-{
+/**
+ * Test the parse() method with '--' to end option processing.
+ */
+TEST_F(CommandLineTest, parse_opt_end) {
     args({"cmd", "-s", "abc", "--", "-sabc"});
     CommandLine cmdl;
     cmdl.opt("str", 's', true);
@@ -194,10 +200,10 @@ TEST_F(CommandLineTest, parse_opt_end)
 }
 
 
-/// Test the parse() method with option error handling
-///
-TEST_F(CommandLineTest, parse_opt_err)
-{
+/**
+ * Test the parse() method with option error handling
+ */
+TEST_F(CommandLineTest, parse_opt_err) {
     CommandLine cmdl{true};
     cmdl.opt("bool", CommandLine::noflag, false);
     cmdl.opt("val", CommandLine::noflag, true);
@@ -211,11 +217,10 @@ TEST_F(CommandLineTest, parse_opt_err)
 }
 
 
-
-/// Test the parse() method with subcommands.
-///
-TEST_F(CommandLineTest, parse_subs)
-{
+/**
+ * Test the parse() method with subcommands.
+ */
+TEST_F(CommandLineTest, parse_subs) {
     args({"cmd", "--bool", "sub1", "--str=abc", "sub2", "123"});
     CommandLine cmdl;
     cmdl.opt("bool", 'b');
@@ -236,10 +241,10 @@ TEST_F(CommandLineTest, parse_subs)
 }
 
 
-/// Test the parse() method with the help option.
-///
-TEST_F(CommandLineTest, parse_help)
-{
+/**
+ * Test the parse() method with the help option.
+ */
+TEST_F(CommandLineTest, parse_help) {
     CommandLine cmdl;
     args({"cmd", "--help"});
     ASSERT_EXIT(cmdl.parse(argc, argv), ExitedWithCode(0), "");
@@ -247,10 +252,10 @@ TEST_F(CommandLineTest, parse_help)
 }
 
 
-/// Test the has_arg() method.
-///
-TEST_F(CommandLineTest, has_arg)
-{
+/**
+ * Test the has_arg() method.
+ */
+TEST_F(CommandLineTest, has_arg) {
     CommandLine cmdl;
     cmdl.opt("bool");
     args({"cmd"});

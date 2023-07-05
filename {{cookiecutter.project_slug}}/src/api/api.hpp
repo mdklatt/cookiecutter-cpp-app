@@ -1,19 +1,23 @@
-/// Define the {{ cookiecutter.app_name }} API.
-///
-/// @file
+/**
+ * Define the {{ cookiecutter.app_name }} API.
+ *
+ * @file
+ */
 #ifndef {{ cookiecutter.app_name|upper }}_API_HPP
 #define {{ cookiecutter.app_name|upper }}_API_HPP
 
 #include <string>
 
 
-/// Sample command.
-///
+/**
+ * Sample command.
+ */
 int cmd1();
 
 
-/// Sample command.
-///
+/**
+ * Sample command.
+ */
 int cmd2();
 
 

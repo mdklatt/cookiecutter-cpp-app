@@ -1,6 +1,8 @@
-/// Implementation of the {{ cookiecutter.app_name }} CLI.
-///
-/// @file
+/**
+ * Implementation of the {{ cookiecutter.app_name }} CLI.
+ *
+ * @file
+ */
 #include <getopt.h>
 #include <cstdlib>
 #include <iostream>
@@ -17,27 +19,28 @@ using std::string;
 
 
 namespace {  // internal linkage
-    
-    /// Display a help message.
-    ///
-    void help()
-    {
+
+    /**
+     * Display a help message.
+     */
+    void help() {
         cout << "{{ cookiecutter.app_name }} [-h]" << endl;
         return;
     }
 }
 
 
-/// Entry point for the command line interface.
-///
-/// The arguments are as passed to main(). The first value of `argv` will be
-/// the command name used to execute the application.
-///
-/// @param argc size of argv
-/// @param argv array of arguments from the command line
-/// @return application exit code
-int cli(int argc, char* argv[])
-{
+/**
+ * Entry point for the command line interface.
+ *
+ * The arguments are as passed to main(). The first value of `argv` will be
+ * the command name used to execute the application.
+ *
+ * @param argc size of argv
+ * @param argv array of arguments from the command line
+ * @return application exit code
+ */
+int cli(int argc, char* argv[]) {
     // The leading '+' for short_opts enables POSIXLY_CORRECT behavior, which
     // halts option processing as soon as a non-option is encountered. This is
     // necessary for implementing subcommands.

@@ -1,12 +1,13 @@
-/// Test suite for the logging module.
-///
-/// Link all test files with the `gtest_main` library to create a command-line 
-/// test runner.
-///
+/**
+ * Test suite for the logging module.
+ *
+ * Link all test files with the `gtest_main` library to create a command-line
+ * test runner.
+ */
+#include "core/logging.hpp"
+#include <gtest/gtest.h>
 #include <list>
 #include <sstream>
-#include <gtest/gtest.h>
-#include "core/logging.hpp"
 
 #include <iostream>
 
@@ -18,27 +19,26 @@ using testing::Values;
 
 using namespace Logging;
 
-
-/// Test fixture for the Logger test suite.
-///
-/// This is used to group tests and provide common set-up and tear-down
-/// code. A new test fixture is created for each test to prevent any side 
-/// effects between tests. Member variables and methods are injected into
-/// each test that uses this fixture.
-///
-/// This will be parametrized over all logging levels.
-///
-class LoggerTest: public TestWithParam<Level>
-{
+/**
+ * Test fixture for the Logger test suite.
+ *
+ * This is used to group tests and provide common set-up and tear-down
+ * code. A new test fixture is created for each test to prevent any side
+ * effects between tests. Member variables and methods are injected into
+ * each test that uses this fixture.
+ *
+ * This will be parametrized over all logging levels.
+ */
+class LoggerTest: public TestWithParam<Level> {
 protected:
-    /// Set up test fixture.
-    ///
-    /// The default logger and its handler have the same severity level and
-    /// will emit the same messages.
-    ///
+    /**
+     * Set up test fixture.
+     *
+     * The default logger and its handler have the same severity level and
+     * will emit the same messages.
+     */
     LoggerTest() :
-        logger{"LoggerTest"}
-    {
+        logger{"LoggerTest"} {
         logger.start(level, stream);
         return;
     }
@@ -51,10 +51,10 @@ protected:
 INSTANTIATE_TEST_SUITE_P(Levels, LoggerTest, Values(INFO, INFO, WARN, ERROR, FATAL));
 
 
-/// Test the stop() method.
-///
-TEST_P(LoggerTest, stop)
-{
+/**
+ * Test the stop() method.
+ */
+TEST_P(LoggerTest, stop) {
     logger.stop();
     logger.log(level, message);
     ASSERT_EQ(stream.str().find(message), string::npos); 
@@ -62,10 +62,10 @@ TEST_P(LoggerTest, stop)
 }
 
 
-/// Test the log() method.
-///
-TEST_P(LoggerTest, log)
-{
+/**
+ * Test the log() method.
+ */
+TEST_P(LoggerTest, log) {
     logger.log(level, message);
     ASSERT_NE(stream.str().find(message), string::npos);
     if (level < FATAL) {
@@ -81,11 +81,10 @@ TEST_P(LoggerTest, log)
     return;
 }
 
-
-/// Test the debug() method.
-///
-TEST_P(LoggerTest, debug)
-{
+/**
+ * Test the debug() method.
+ */
+TEST_P(LoggerTest, debug) {
     logger.debug(message);
     if (level <= DEBUG) {
         // Message should be logged.
@@ -99,10 +98,10 @@ TEST_P(LoggerTest, debug)
 }
 
 
-/// Test the info() method.
-///
-TEST_P(LoggerTest, info)
-{
+/**
+ * Test the info() method.
+ */
+TEST_P(LoggerTest, info) {
     logger.info(message);
     if (level <= INFO) {
         // Message should be logged.
@@ -116,10 +115,10 @@ TEST_P(LoggerTest, info)
 }
 
 
-/// Test the warn() method.
-///
-TEST_P(LoggerTest, warn)
-{
+/**
+ * Test the warn() method.
+ */
+TEST_P(LoggerTest, warn) {
     logger.warn(message);
     if (level <= WARN) {
         // Message should be logged.
@@ -133,10 +132,10 @@ TEST_P(LoggerTest, warn)
 }
 
 
-/// Test the error() method.
-///
-TEST_P(LoggerTest, error)
-{
+/**
+ * Test the error() method.
+ */
+TEST_P(LoggerTest, error) {
     logger.error(message);
     if (level <= ERROR) {
         // Message should be logged.
@@ -150,10 +149,10 @@ TEST_P(LoggerTest, error)
 }
 
 
-/// Test the fatal() method.
-///
-TEST_P(LoggerTest, fatal)
-{
+/**
+ * Test the fatal() method.
+ */
+TEST_P(LoggerTest, fatal) {
     logger.fatal(message);
     if (level <= FATAL) {
         // Message should be logged.

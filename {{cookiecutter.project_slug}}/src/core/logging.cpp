@@ -1,5 +1,6 @@
-/// Implementation of the logging module.
-///
+/**
+ * Implementation of the logging module.
+ */
 #include <cctype>
 #include <cstdio>
 #include <ctime>
@@ -32,8 +33,7 @@ using namespace Logging;
 Logger Logging::logger{"{{ cookiecutter.app_name }}"};
 
 
-string Logging::level(Level val)
-{
+string Logging::level(Level val) {
     // This does not handle NOTSET because it is a private implementation 
     // detail of this module.
     static const std::map<Level, string> levels{
@@ -47,8 +47,7 @@ string Logging::level(Level val)
 }
 
 
-Level Logging::level(string str)
-{
+Level Logging::level(string str) {
     // This does not handle NOTSET because it is a private implementation 
     // detail of this module.
     static const std::map<string, Level> levels{
@@ -68,8 +67,7 @@ Level Logging::level(string str)
 }
 
 
-void StreamHandler::emit(const Record& record) const
-{
+void StreamHandler::emit(const Record& record) const {
     // TODO: Allow user-specified formatting.
     const list<string> fields{time(record), Logging::level(record.level), record.name, record.message};
     const auto last(prev(fields.end()));
@@ -79,8 +77,7 @@ void StreamHandler::emit(const Record& record) const
 }
 
 
-string StreamHandler::time(const Record& record) const
-{
+string StreamHandler::time(const Record& record) const {
     const auto elapsed(record.time.time_since_epoch());
     const std::time_t time{duration_cast<seconds>(elapsed).count()};
     const auto time_info(std::localtime(&time));
@@ -96,71 +93,61 @@ string StreamHandler::time(const Record& record) const
 }
 
 
-StreamHandler* StreamHandler::clone() const
-{
+StreamHandler* StreamHandler::clone() const {
     return new StreamHandler(*this);
 }
 
 
-void Logger::start(Level level, ostream& stream)
-{
+void Logger::start(Level level, ostream& stream) {
     this->level = level;
     handler(StreamHandler(level, stream));
     return;
 }
 
 
-void Logger::stop()
-{
+void Logger::stop() {
     handlers.clear();
     return;
 }
 
 
-void Logger::handler(const Handler& handler)
-{
+void Logger::handler(const Handler& handler) {
     handlers.push_back(unique_ptr<const Handler>{handler.clone()});
     return;
 }
 
 
-void Logger::debug(const string& message) const
-{
+void Logger::debug(const string& message) const {
     log(DEBUG, message);
     return;
 }
 
 
-void Logger::info(const string& message) const
-{
+void Logger::info(const string& message) const {
     log(INFO, message);
     return;
 }
 
 
-void Logger::warn(const string& message) const
-{
+void Logger::warn(const string& message) const {
     log(WARN, message);
     return;
 }
 
 
-void Logger::error(const string& message) const
-{
+void Logger::error(const string& message) const {
     log(ERROR, message);
     return;
 }
 
 
-void Logger::fatal(const string& message) const
-{
+void Logger::fatal(const string& message) const {
     log(FATAL, message);
     return;
 }
 
 
-void Logger::log(Level level, const string& message) const
-{
+void Logger::log(Level level, const string& message) const {
     if (level >= this->level) {
         const Record record{level, name, message};
         for (auto& handler: handlers) {
@@ -171,8 +158,7 @@ void Logger::log(Level level, const string& message) const
 }
 
 
-void Handler::handle(const Record& record) const
-{
+void Handler::handle(const Record& record) const {
     if (record.level >= level) {
          emit(record);
     }
