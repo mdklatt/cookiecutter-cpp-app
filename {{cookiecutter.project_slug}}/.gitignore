@@ -1,5 +1,6 @@
 # Ignore C++ build artifacts.
 
+build/
 *.o
 *.so
 *.exe

@@ -14,21 +14,21 @@ Create the development environment:
 
 .. code-block::
 
-    $ cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON -S . -B build/Debug
+    $ make dev
 
 
 Build the application:
 
 .. code-block::
 
-    $ cmake --build build/Debug
+    $ make build
 
 
-Run unit tests:
+Run tests:
 
 .. code-block::
 
-    $ cd build && ctest
+    $ make test
 
 
 .. _mdklatt/cookiecutter-cpp-app: https://github.com/mdklatt/cookiecutter-cpp-app

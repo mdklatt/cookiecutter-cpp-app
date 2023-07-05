@@ -46,33 +46,33 @@ def project(tmpdir, template, context) -> Path:
     cookiecutter(str(template), no_input=True, output_dir=tmpdir, extra_context=context)
     return tmpdir / context["app_name"]
 
-
 def test_project(project):
     """ Verify that the project was created correctly.
 
     """
     # Just a basic sanity test.
-    assert len(list(project.iterdir())) == 7
+    assert len(list(project.iterdir())) == 8
     return
 
 
-def test_build(project, context):
+def test_build(project):
     """ Verify that the application builds.
 
     """
-    for command in "cmake .", "cmake --build .":
-        process = run(split(command), cwd=project)
+    for target in "dev", "build", "test":
+        process = run(split(f"make {target}"), cwd=project)
         assert process.returncode == 0
     return
 
 
-def test_exec(project, context):
-    """ Verify execution of the application and its test suite.
+def test_app(project, context):
+    """ Verify application execution.
 
     """
-    for command in "src/cppapp -h", "tests/unit/test_cppapp":
-        process = run(split(command), cwd=project)
-        assert process.returncode == 0
+    cwd = project / "build/Debug/src"
+    command = f"./{context['app_name']} -h"
+    process = run(split(command), cwd=cwd)
+    assert process.returncode == 0
     return
 
 
@@ -80,38 +80,3 @@ def test_exec(project, context):
 
 if __name__ == "__main__":
     raise SystemExit(pytest.main([__file__]))
-
-
-
-
-
-
-
-
-
-
-
-
-#
-#
-# def main() -> int:
-#     """ Execute the test.
-#
-#     """
-#     template = Path(__file__).resolve().parents[1]
-#     defaults = loads(template.joinpath("cookiecutter.json").read_text())
-#     with TemporaryDirectory() as tmpdir:
-#         cookiecutter(str(template), no_input=True, output_dir=tmpdir)
-#         name = defaults["app_name"]
-#         cwd = Path(tmpdir) / name
-#         for opts in "-DCMAKE_BUILD_TYPE=Debug", "--build":
-#             check_call(split(f"cmake {opts:s} ."), cwd=cwd)
-#         for command in f"src/{name} -h", f"tests/unit/test_{name}":
-#             check_call(split(f"{command:s}"), cwd=cwd)
-#     return 0
-#
-#
-# # Make the script executable.
-#
-# if __name__ == "__main__":
-#     raise SystemExit(main())
