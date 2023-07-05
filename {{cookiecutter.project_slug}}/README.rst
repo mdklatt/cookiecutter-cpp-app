@@ -3,55 +3,32 @@
 {{ cookiecutter.app_name }}
 {{ delim }}
 
-This is the {{ cookiecutter.app_name }} application.
+C++ application created from the `mdklatt/cookiecutter-cpp-app`_ template.
 
 
-Building
-========
+===========
+Development
+===========
 
-Application
------------
-.. code-block:: console
+Create the development environment:
 
-    $ mkdir build && cd build
-    $ cmake -DCMAKE_BUILD_TYPE=Debug ../
-    $ cmake --build .
-    
+.. code-block::
 
-Documentation (Doxygen)
------------------------
-.. code-block:: console
-
-    $ cd doc/doxygen
-    $ doxygen Doxyfile
- 
-    
-Documenation (Sphinx)
----------------------
-.. _Breathe: https://breathe.readthedocs.io/en/latest/
-
-.. code-block:: console
-
-    $ sphinx-build -b html doc/sphinx doc/sphinx/_build/html
-    
-Doxygen documentation can be integreted into Sphinx using the `Breathe`_
-extension.
+    $ cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON -S . -B build/Debug
 
 
-Running
-=======
+Build the application:
 
-Application
------------
-.. code-block:: console
+.. code-block::
 
-    $ cd build
-    $ ./{{ cookiecutter.app_name }} --help
+    $ cmake --build build/Debug
 
 
-Test Suite
-----------
-.. code-block:: console
+Run unit tests:
 
-    $ cd build
-    $ test/{{ cookiecutter.app_name }}_test
+.. code-block::
+
+    $ cd build && ctest
+
+
+.. _mdklatt/cookiecutter-cpp-app: https://github.com/mdklatt/cookiecutter-cpp-app
