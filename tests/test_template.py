@@ -87,6 +87,18 @@ def test_app(project, context):
     return
 
 
+@pytest.mark.usefixtures("build")
+def test_docs(project):
+    """ Verify documentation build.
+
+    """
+    process = run(split(f"make docs"), cwd=project)
+    assert process.returncode == 0
+    path = Path(project / "docs/doxygen/html")
+    assert next(path.iterdir())  # directory isn't empty
+    return
+
+
 # Make the script executable.
 
 if __name__ == "__main__":

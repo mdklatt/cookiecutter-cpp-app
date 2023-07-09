@@ -1,4 +1,5 @@
 # Ignore Doxygen build artifacts.
 
+Doxyfile
 html/
 latex/
