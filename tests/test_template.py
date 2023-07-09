@@ -9,7 +9,7 @@ from cookiecutter.generate import generate_context
 from cookiecutter.main import cookiecutter
 from pathlib import Path
 from shlex import split
-from subprocess import run
+from subprocess import check_call, run
 
 
 @pytest.fixture(scope="session")
@@ -46,6 +46,16 @@ def project(tmpdir, template, context) -> Path:
     cookiecutter(str(template), no_input=True, output_dir=tmpdir, extra_context=context)
     return tmpdir / context["app_name"]
 
+
+@pytest.fixture(scope="session")
+def build(project):
+    """ Build the application.
+
+    """
+    check_call(split("make dev build"), cwd=project)
+    return
+
+
 def test_project(project):
     """ Verify that the project was created correctly.
 
@@ -55,16 +65,17 @@ def test_project(project):
     return
 
 
-def test_build(project):
-    """ Verify that the application builds.
+@pytest.mark.usefixtures("build")
+def test_unit(project):
+    """ Verify that unit tests are working.
 
     """
-    for target in "dev", "build", "test":
-        process = run(split(f"make {target}"), cwd=project)
-        assert process.returncode == 0
+    process = run(split(f"make test"), cwd=project)
+    assert process.returncode == 0
     return
 
 
+@pytest.mark.usefixtures("build")
 def test_app(project, context):
     """ Verify application execution.
 
