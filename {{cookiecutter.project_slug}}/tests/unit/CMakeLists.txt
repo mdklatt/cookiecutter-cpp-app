@@ -23,3 +23,8 @@ PRIVATE
     gtest
     gtest_main
 )
+
+
+# Add tests to CTest suite.
+
+gtest_discover_tests(test_${name} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
