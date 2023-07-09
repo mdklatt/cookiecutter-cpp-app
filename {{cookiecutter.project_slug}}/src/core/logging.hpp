@@ -42,7 +42,7 @@ namespace Logging {
     /**
      * Convert the record level to a string.
      *
-     * @param level level value
+     * @param val level value
      * @return record level
      */
     std::string level(Level val);

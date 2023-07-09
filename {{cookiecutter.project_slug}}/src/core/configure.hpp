@@ -67,7 +67,6 @@ namespace configure {
          * Get a config value.
          *
          * @param key key
-         * @param value value
          * @param section section name; defaults to the root section
          */
         std::string get(const std::string& key, const std::string& section="") const;        

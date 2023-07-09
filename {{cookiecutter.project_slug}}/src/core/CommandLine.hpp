@@ -105,7 +105,6 @@ public:
      * @param name long name for this option
      * @param flag flag character for this option (optional)
      * @param has_val true if this option takes an argument
-     * @return
      */
     void opt(const std::string& name, char flag=noflag, bool has_val=false);
 
