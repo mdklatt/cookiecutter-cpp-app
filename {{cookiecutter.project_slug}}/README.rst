@@ -17,7 +17,7 @@ Create the development environment:
     $ make dev
 
 
-Build the application:
+Build the project:
 
 .. code-block::
 
@@ -29,6 +29,13 @@ Run tests:
 .. code-block::
 
     $ make test
+
+
+Build documentation:
+
+.. code-block::
+
+    $ make docs
 
 
 .. _mdklatt/cookiecutter-cpp-app: https://github.com/mdklatt/cookiecutter-cpp-app

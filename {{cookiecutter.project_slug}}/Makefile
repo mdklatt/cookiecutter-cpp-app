@@ -1,4 +1,4 @@
-# Project management tasks; see CMakeLists.txt for building the application.
+# Project management tasks; see CMakeLists.txt for building the project.
 
 BUILD_TYPE = Debug
 BUILD_ROOT = build/$(BUILD_TYPE)
