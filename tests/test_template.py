@@ -35,6 +35,9 @@ def context(template) -> dict:
 
     """
     context = generate_context(template.joinpath("cookiecutter.json"))
+    context["cookiecutter"] |= {
+        "project_slug": "cppapp"
+    }
     return context["cookiecutter"]
 
 
@@ -44,16 +47,18 @@ def project(tmpdir, template, context) -> Path:
 
     """
     cookiecutter(str(template), no_input=True, output_dir=tmpdir, extra_context=context)
-    return tmpdir / context["app_name"]
+    return tmpdir / context["project_slug"]
 
 
 @pytest.fixture(scope="session")
-def build(project):
+def build(project) -> Path:
     """ Build the application.
 
+    :return: build root path
     """
-    check_call(split("make dev build"), cwd=project)
-    return
+    root = "build/Debug"
+    check_call(split(f"make BUILD_ROOT={root} dev build"), cwd=project)
+    return project / root
 
 
 def test_project(project):
@@ -76,13 +81,12 @@ def test_unit(project):
 
 
 @pytest.mark.usefixtures("build")
-def test_app(project, context):
+def test_app(project, context, build):
     """ Verify application execution.
 
     """
-    cwd = project / "build/Debug/src"
-    command = f"./{context['app_name']} -h"
-    process = run(split(command), cwd=cwd)
+    app = build / "src" / context['app_name']
+    process = run(split(f"{app} -h"), cwd=project)
     assert process.returncode == 0
     return
 
