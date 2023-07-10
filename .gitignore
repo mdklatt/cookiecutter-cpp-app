@@ -11,6 +11,11 @@
 .venv*/
 
 
+# Ignore Make artifacts.
+
+**/.make-update
+
+
 # Ignore settings for various IDEs.
 
 .idea/

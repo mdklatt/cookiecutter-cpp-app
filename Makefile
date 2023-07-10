@@ -6,6 +6,7 @@ PYTEST = $(PYTHON) -m pytest -v
 
 $(VENV)/.make-update: requirements-dev.txt
 	python -m venv $(VENV)
+	$(PYTHON) -m pip install -U pip  # needs to be updated first
 	$(PYTHON) -m pip install -r $^
 	touch $@
 
