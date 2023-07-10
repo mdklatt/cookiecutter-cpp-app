@@ -66,7 +66,7 @@ def test_project(project):
 
     """
     # Just a basic sanity test.
-    assert len(list(project.iterdir())) == 8
+    assert len(list(project.iterdir())) == 9
     return
 
 
@@ -100,6 +100,19 @@ def test_docs(project):
     assert process.returncode == 0
     path = Path(project / "docs/doxygen/html")
     assert next(path.iterdir())  # directory isn't empty
+    return
+
+
+def test_install(tmp_path, project, context, build):
+    """ Test the installation rules.
+
+    """
+    install = tmp_path / "opt/cppapp"
+    command = f"cmake --install {build} --prefix {install}"
+    process = run(split(command), cwd=project)
+    assert process.returncode == 0
+    assert Path(install / "bin" / context["app_name"]).is_file()
+    assert Path(install / "etc" / "config.ini").is_file()
     return
 
 

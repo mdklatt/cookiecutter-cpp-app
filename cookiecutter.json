@@ -6,6 +6,5 @@
     "project_version": "0.1.0.0",
     "cmake_version": "3.16",
     "googletest_version": "v1.13.0",
-    "cpp_standard": "17",
-    "sphinx_theme": "alabaster"
+    "cpp_standard": "17"
 }
