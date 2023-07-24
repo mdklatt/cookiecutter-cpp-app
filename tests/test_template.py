@@ -112,7 +112,7 @@ def test_install(tmp_path, project, context, build):
     process = run(split(command), cwd=project)
     assert process.returncode == 0
     assert Path(install / "bin" / context["app_name"]).is_file()
-    assert Path(install / "etc" / "config.ini").is_file()
+    assert Path(install / "etc" / "config.toml").is_file()
     return
 
 

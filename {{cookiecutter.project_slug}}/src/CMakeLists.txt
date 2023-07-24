@@ -1,3 +1,15 @@
+# Get dependencies.
+
+include(FetchContent)
+
+FetchContent_Declare(
+    tomlplusplus
+    GIT_REPOSITORY https://github.com/marzer/tomlplusplus
+    GIT_TAG v3.3.0
+)
+FetchContent_MakeAvailable(tomlplusplus)
+
+
 # Generate version header from the project version in CMakeLists.txt.
 
 configure_file(version.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/version.hpp)
@@ -15,6 +27,11 @@ add_library(${name}_obj OBJECT
     core/configure.cpp
     core/logging.cpp
 )
+target_link_libraries(${name}_obj
+PUBLIC
+    tomlplusplus::tomlplusplus
+)
+
 
 target_include_directories(${name}_obj
 PUBLIC

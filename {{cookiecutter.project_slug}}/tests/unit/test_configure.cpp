@@ -29,7 +29,7 @@ using testing::Test;
  */
 class ConfigTest: public Test {
 protected:
-    const std::string path{"tests/unit/assets/config.ini"};
+    const std::string path{"tests/unit/assets/config.toml"};
     const vector<string> keys = {"key1", "key2"};
     const vector<string> values = {"value1", "value2"};
 };
@@ -41,7 +41,7 @@ protected:
 TEST_F(ConfigTest, ctor_stream) {
     ifstream stream{path};
     Config config(stream);
-    for (size_t pos(0); pos != keys.size(); ++ pos) {
+    for (size_t pos(0); pos != keys.size(); ++pos) {
         ASSERT_EQ(config.get(keys[pos]), values[pos]);
         ASSERT_EQ(config.get(keys[pos], "section1"), values[pos]);
     }
@@ -67,7 +67,7 @@ TEST_F(ConfigTest, load_stream) {
     ifstream stream{path};
     Config config;
     config.load(path);
-    for (size_t pos(0); pos != keys.size(); ++ pos) {
+    for (size_t pos(0); pos != keys.size(); ++pos) {
         ASSERT_EQ(config.get(keys[pos]), values[pos]);
         ASSERT_EQ(config.get(keys[pos], "section1"), values[pos]);
     }
@@ -80,7 +80,20 @@ TEST_F(ConfigTest, load_stream) {
 TEST_F(ConfigTest, load_path) {
     Config config;
     config.load(path);
-    for (size_t pos(0); pos != keys.size(); ++ pos) {
+    for (size_t pos{0}; pos != keys.size(); ++pos) {
+        ASSERT_EQ(config.get(keys[pos]), values[pos]);
+        ASSERT_EQ(config.get(keys[pos], "section1"), values[pos]);
+    }
+}
+
+
+/**
+ * Test the load method for a path.
+ */
+TEST_F(ConfigTest, load_toml) {
+    Config config;
+    config.load(path);
+    for (size_t pos{0}; pos != keys.size(); ++pos) {
         ASSERT_EQ(config.get(keys[pos]), values[pos]);
         ASSERT_EQ(config.get(keys[pos], "section1"), values[pos]);
     }

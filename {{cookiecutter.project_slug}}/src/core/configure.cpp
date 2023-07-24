@@ -2,6 +2,7 @@
  * Implementation of the configure module.
  */
 #include "configure.hpp"
+#include <toml++/toml.h>
 #include <cctype>
 #include <fstream>
 #include <iostream>
@@ -11,6 +12,7 @@
 
 using std::getline;
 using std::ifstream;
+using std::invalid_argument;
 using std::isspace;
 using std::istream;
 using std::out_of_range;
@@ -43,39 +45,12 @@ void Config::load(const string& path) {
 
 
 void Config::load(istream& stream) {
-    // This is intended as a proof-of-concept for application configuration,
-    // not a complete INI parser.
-    const string whitespace(" \t\n\r\f\v");  // FIXME: not locale aware
-    string line;
-    string section("");  // root section
-    while (getline(stream, line)) {
-        line.erase(0, line.find_first_not_of(whitespace));
-        if (line.empty() or line[0] == comment) {
-            // Ignore blank lines and comment lines.
-            continue;
-        }
-        else if (line[0] == '[') {
-            // Insert a section heading.
-            const auto pos(line.find_last_of(']'));
-            if (pos == string::npos) {
-                throw runtime_error("invalid section heading: " + line);
-            }
-            section = line.substr(1, pos-1);
-            data.emplace(section, ValueMap::mapped_type());
-        }
-        else {
-            // Insert a key/value pair. Should space around '=' be allowed?
-            const auto pos(line.find('='));
-            if (pos == 0 or pos == string::npos) {
-                throw runtime_error("expected key=value: " + line);                
-            }
-            const string key(line.substr(0, pos));
-            const string value(line.substr(pos+1));  // empty value is okay
-            const ValueMap::mapped_type::value_type entry({key, value});
-            data[section][key] = value;
-        }       
-    }
-    return;
+    insert("", toml::parse(stream));
+}
+
+
+void Config::load(const std::filesystem::path& path) {
+    insert("", toml::parse_file(path.string()));
 }
 
 
@@ -95,4 +70,21 @@ string Config::get(const string& key, const string& section) const {
         throw out_of_range("no '" + key + "' in '" + section + "'");
     }
     return value;
+}
+
+
+void Config::insert(const std::string root, const toml::table& table) {
+    for (auto&& [key, node] : table) {
+        if (node.is_value()) {
+            data[root][string{key.str()}] = node.value_or("");
+        }
+        else if (node.is_table()) {
+            // This assumes only a single level of nesting.
+            insert(string{key.str()}, *node.as_table());
+        }
+        else {
+            throw invalid_argument{"unexpected TOML node type"};
+        }
+    }
+    return;
 }

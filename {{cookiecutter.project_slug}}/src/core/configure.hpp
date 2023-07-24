@@ -9,6 +9,8 @@
 #ifndef {{ cookiecutter.app_name|upper }}_CONFIGURE_HPP
 #define {{ cookiecutter.app_name|upper }}_CONFIGURE_HPP
 
+#include <toml++/toml.h>
+#include <filesystem>
 #include <istream>
 #include <map>
 #include <string>
@@ -18,8 +20,7 @@ namespace configure {
     /**
      * Store application config data.
      */
-    class Config
-    {
+    class Config {
     public:
         /**
          * Default constructor.
@@ -27,31 +28,37 @@ namespace configure {
         Config() = default;
 
         /**
-         * Construct a Config object from an INI format stream.
+         * Construct a Config object from an input stream.
          *
-         * @param stream conguration data stream
+         * @param stream configuration file
          */
-        Config(std::istream& stream);
+        explicit Config(std::istream& stream);
 
         /**
-         * Construct a Config object from an INI format file.
+         * Construct a Config object from a file path.
          *
-         * @param path conguration file path
+         * @param path configuration file path
          */
-        Config(const std::string& path);
+        explicit Config(const std::filesystem::path& path);
+
+        /** @overload */
+        explicit Config(const std::string& path);
 
         /**
-         * Load config data from an INI format stream.
+         * Load config data from an input stream.
          *
          * @param stream configuration data stream
          */
         void load(std::istream& stream);
 
         /**
-         * Load config data from an INI format file.
+         * Load config data from a file path.
          *
-         * @param path conguration file path
+         * @param path configuration file path
          */
+        void load(const std::filesystem::path& path);
+
+        /** @overload */
         void load(const std::string& path);
 
         /**
@@ -75,6 +82,11 @@ namespace configure {
         typedef std::map<std::string, std::map<std::string, std::string>> ValueMap;
         const static char comment = ';';
         ValueMap data;
+
+        /**
+         *
+         */
+        void insert(const std::string key, const toml::table& table);
     };
 }
 

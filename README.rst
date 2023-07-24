@@ -25,7 +25,7 @@ uses modern CMake practices (*e.g.*  `It's Time To Do CMake Right`_).
 
 - CLI with subcommands
 - Logging
-- Hierarchical `TOML`_ configuration (TODO)
+- Hierarchical `TOML`_ configuration
 
 
 =====
