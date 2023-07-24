@@ -54,33 +54,32 @@ void Config::load(const std::filesystem::path& path) {
 }
 
 
-void Config::set(const string& key, const string& value, const string& section) {
-    data.emplace(section, ValueMap::mapped_type());
-    data[section][key] = value;    
-    return;
+string& Config::operator[](const string& key) {
+    return data[key];
 }
     
 
-string Config::get(const string& key, const string& section) const {
-    string value;
+const string& Config::operator[](const string& key) const {
     try {
-        value = data.at(section).at(key);
+        return data.at(key);
     }
     catch (out_of_range&) {
-        throw out_of_range("no '" + key + "' in '" + section + "'");
+        throw out_of_range("no value for '" + key + "'");
     }
-    return value;
 }
 
 
 void Config::insert(const std::string root, const toml::table& table) {
     for (auto&& [key, node] : table) {
+        string path_key = string{key.str()};
+        if (root != "") {
+            path_key = root + "." + path_key;
+        }
         if (node.is_value()) {
-            data[root][string{key.str()}] = node.value_or("");
+            data[path_key] = node.value_or("");
         }
         else if (node.is_table()) {
-            // This assumes only a single level of nesting.
-            insert(string{key.str()}, *node.as_table());
+            insert(path_key, *node.as_table());
         }
         else {
             throw invalid_argument{"unexpected TOML node type"};
@@ -88,3 +87,4 @@ void Config::insert(const std::string root, const toml::table& table) {
     }
     return;
 }
+

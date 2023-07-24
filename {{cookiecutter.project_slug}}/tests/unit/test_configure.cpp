@@ -42,8 +42,9 @@ TEST_F(ConfigTest, ctor_stream) {
     ifstream stream{path};
     Config config(stream);
     for (size_t pos(0); pos != keys.size(); ++pos) {
-        ASSERT_EQ(config.get(keys[pos]), values[pos]);
-        ASSERT_EQ(config.get(keys[pos], "section1"), values[pos]);
+        ASSERT_EQ(config[keys[pos]], values[pos]);
+        ASSERT_EQ(config["section1." + keys[pos]], values[pos]);
+        ASSERT_EQ(config["section1.table." + keys[pos]], values[pos]);
     }
 }
 
@@ -54,8 +55,9 @@ TEST_F(ConfigTest, ctor_stream) {
 TEST_F(ConfigTest, ctor_path) {
     Config config{path};
     for (size_t pos(0); pos != keys.size(); ++ pos) {
-        ASSERT_EQ(config.get(keys[pos]), values[pos]);
-        ASSERT_EQ(config.get(keys[pos], "section1"), values[pos]);
+        ASSERT_EQ(config[keys[pos]], values[pos]);
+        ASSERT_EQ(config["section1." + keys[pos]], values[pos]);
+        ASSERT_EQ(config["section1.table." + keys[pos]], values[pos]);
     }
 }
 
@@ -68,8 +70,9 @@ TEST_F(ConfigTest, load_stream) {
     Config config;
     config.load(path);
     for (size_t pos(0); pos != keys.size(); ++pos) {
-        ASSERT_EQ(config.get(keys[pos]), values[pos]);
-        ASSERT_EQ(config.get(keys[pos], "section1"), values[pos]);
+        ASSERT_EQ(config[keys[pos]], values[pos]);
+        ASSERT_EQ(config["section1." + keys[pos]], values[pos]);
+        ASSERT_EQ(config["section1.table." + keys[pos]], values[pos]);
     }
 }
 
@@ -81,8 +84,9 @@ TEST_F(ConfigTest, load_path) {
     Config config;
     config.load(path);
     for (size_t pos{0}; pos != keys.size(); ++pos) {
-        ASSERT_EQ(config.get(keys[pos]), values[pos]);
-        ASSERT_EQ(config.get(keys[pos], "section1"), values[pos]);
+        ASSERT_EQ(config[keys[pos]], values[pos]);
+        ASSERT_EQ(config["section1." + keys[pos]], values[pos]);
+        ASSERT_EQ(config["section1.table." + keys[pos]], values[pos]);
     }
 }
 
@@ -94,24 +98,21 @@ TEST_F(ConfigTest, load_toml) {
     Config config;
     config.load(path);
     for (size_t pos{0}; pos != keys.size(); ++pos) {
-        ASSERT_EQ(config.get(keys[pos]), values[pos]);
-        ASSERT_EQ(config.get(keys[pos], "section1"), values[pos]);
+        ASSERT_EQ(config[keys[pos]], values[pos]);
+        ASSERT_EQ(config["section1." + keys[pos]], values[pos]);
+        ASSERT_EQ(config["section1.table." + keys[pos]], values[pos]);
     }
 }
 
 
 /**
- * Test the set() and get() methods.
+ * Test value access.
  */
-TEST_F(ConfigTest, set_get) {
+TEST_F(ConfigTest, access) {
     ifstream stream{path};
     Config config;
-    for (size_t pos(0); pos != keys.size(); ++ pos) {
-        config.set(keys[pos], values[pos]);
-        config.set(keys[pos], values[pos], "section1");
-    }
-    for (size_t pos(0); pos != keys.size(); ++ pos) {
-        ASSERT_EQ(config.get(keys[pos]), values[pos]);
-        ASSERT_EQ(config.get(keys[pos], "section1"), values[pos]);
+    for (size_t pos(0); pos != keys.size(); ++pos) {
+        config[keys[pos]] = values[pos];
+        ASSERT_EQ(config[keys[pos]], values[pos]);
     }
 }

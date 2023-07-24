@@ -30,14 +30,14 @@ namespace configure {
         /**
          * Construct a Config object from an input stream.
          *
-         * @param stream configuration file
+         * @param stream TOML data stream
          */
         explicit Config(std::istream& stream);
 
         /**
-         * Construct a Config object from a file path.
+         * Construct a Config object from a file.
          *
-         * @param path configuration file path
+         * @param path TOML file path
          */
         explicit Config(const std::filesystem::path& path);
 
@@ -47,14 +47,14 @@ namespace configure {
         /**
          * Load config data from an input stream.
          *
-         * @param stream configuration data stream
+         * @param stream TOML data stream
          */
         void load(std::istream& stream);
 
         /**
          * Load config data from a file path.
          *
-         * @param path configuration file path
+         * @param path TOML file path
          */
         void load(const std::filesystem::path& path);
 
@@ -62,31 +62,44 @@ namespace configure {
         void load(const std::string& path);
 
         /**
-         * Set a config value.
+         * Access a writable config value.
+         *
+         * If `key` does not exist it will be crated. Use dotted components to
+         * refer to nested values, *e.g.* "table.nested.value". Keys without
+         # dotted components refer to root-level scalar values.
          *
          * @param key key
-         * @param value value
-         * @param section section name; defaults to the root section
+         * @return value reference mapped to 'key'
          */
-        void set(const std::string& key, const std::string& value="", const std::string& section="");
+        std::string& operator[](const std::string& key);
 
         /**
-         * Get a config value.
+         * Access a read-only config value.
          *
-         * @param key key
+         * A `std::out_of_range` exception will be thrown if the key does not
+         * exist. Use dotted components to refer to nested values, *e.g.*
+         * "table.nested.value". Keys without  dotted components refer to
+         * root-level scalar values.
+         *
+         * @param key hierarchical element key
          * @param section section name; defaults to the root section
          */
-        std::string get(const std::string& key, const std::string& section="") const;        
+        const std::string& operator[](const std::string& key) const;
         
     private:
-        typedef std::map<std::string, std::map<std::string, std::string>> ValueMap;
-        const static char comment = ';';
+        typedef std::map<std::string, std::string> ValueMap;
         ValueMap data;
 
         /**
+         * Insert a table element into the data structure.
          *
+         * Nested tables are inserted recursively using dotted components for
+         * the key name, *e.g.* "root.nested.value".
+         *
+         * @param root key that designates the root of this table
+         * @param table TOML table element
          */
-        void insert(const std::string key, const toml::table& table);
+        void insert(const std::string root, const toml::table& table);
     };
 }
 
