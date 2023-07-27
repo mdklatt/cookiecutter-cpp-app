@@ -1,2 +1,2 @@
 [logging]
-level = "warning"
+level = "warn"

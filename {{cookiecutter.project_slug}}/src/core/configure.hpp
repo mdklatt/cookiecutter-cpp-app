@@ -58,9 +58,6 @@ namespace configure {
          */
         void load(const std::filesystem::path& path);
 
-        /** @overload */
-        void load(const std::string& path);
-
         /**
          * Access a writable config value.
          *
@@ -101,7 +98,10 @@ namespace configure {
          */
         void insert(const std::string root, const toml::table& table);
     };
-}
+
+    extern Config config;
+
+}  // namespace
 
 
 #endif  // {{ cookiecutter.app_name|upper }}_CONFIGURE_HPP

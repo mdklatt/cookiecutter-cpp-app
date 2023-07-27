@@ -34,16 +34,6 @@ Config::Config(const std::string& path) {
 }
 
 
-void Config::load(const string& path) {
-    ifstream stream(path);
-    if (not stream) {
-        throw runtime_error("could not open config file " + path);
-    }
-    load(stream);
-    return;
-}
-
-
 void Config::load(istream& stream) {
     insert("", toml::parse(stream));
 }
@@ -88,3 +78,4 @@ void Config::insert(const std::string root, const toml::table& table) {
     return;
 }
 
+Config configure::config;

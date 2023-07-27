@@ -7,10 +7,12 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
+#include "core/configure.hpp"
 #include "core/logging.hpp"
 #include "api/api.hpp"
 #include "version.hpp"
 
+using configure::config;
 using Logging::logger;
 using Logging::level;
 using std::cout;
@@ -51,7 +53,7 @@ int cli(int argc, char* argv[]) {
         {"warn", required_argument, nullptr, 'w'},
         {nullptr, 0, nullptr, 0}  // sentinel
     };
-    string warn("warn");
+    string warn;
     optind = 0;  // reset getopt parser (POSIXLY_CORRECT mode); not thread-safe
     while (true) {
         // Process options.
@@ -61,7 +63,7 @@ int cli(int argc, char* argv[]) {
         }
         switch (opt) {        
             case 'h': 
-                cout << "{{ cookiecutter.app_name }} [-h]" << endl;
+                help();
                 return EXIT_SUCCESS;
             case 'v':
                 cout << "{{ cookiecutter.app_name }} v" << version() << endl;
@@ -76,8 +78,14 @@ int cli(int argc, char* argv[]) {
                 return EXIT_FAILURE;
         }
     }
-    logger.start(level(warn));
-    logger.info("starting application");
+    logger.start(level(warn.empty() ? "WARN" : warn));
+    logger.info("starting execution");
+    config.load("etc/config.toml");
+    if (not warn.empty()) {
+        config["logging.level"] = warn;
+    }
+    logger.stop();  // clear handlers
+    logger.start(level(config["logging.level"]));
     int status{EXIT_FAILURE};
     if (optind == argc) {
         help();

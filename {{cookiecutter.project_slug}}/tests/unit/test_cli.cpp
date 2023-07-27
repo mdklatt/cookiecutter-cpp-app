@@ -126,7 +126,7 @@ TEST_F(CliTest, warn) {
     for (auto flag: vector<string>{"-w", "--warn"}) {
         cmdl({"{{ cookiecutter.app_name }}", flag, "info", "cmd1"});
         ASSERT_EQ(cli(argc, argv), EXIT_SUCCESS);
-        ASSERT_NE(stderr.str().find("starting application"), string::npos);    
+        ASSERT_NE(stderr.str().find("starting execution"), string::npos);
     }
     return;
 }
