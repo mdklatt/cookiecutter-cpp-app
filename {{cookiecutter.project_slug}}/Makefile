@@ -16,7 +16,7 @@ build:
 
 .PHONY: test
 test: build
-	cd $(BUILD_ROOT) && ctest
+	cd $(BUILD_ROOT) && ctest --output-on-failure
 
 
 .PHONY: docs
